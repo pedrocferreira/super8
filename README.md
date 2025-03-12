@@ -1,39 +1,133 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Logo do Laravel"></a></p>
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Status da Build"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total de Downloads"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Última Versão Estável"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="Licença"></a>
 </p>
 
-## About Laravel
+# SKY ARENA - Sistema de Ranking de Beach Tennis
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Sobre o Projeto
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+O **SKY ARENA** é uma plataforma completa desenvolvida em Laravel para gerenciamento de torneios e ranking de Beach Tennis. O sistema permite a organização de competições, acompanhamento de jogadores e manutenção de estatísticas em tempo real.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Funcionalidades Principais
 
-## Learning Laravel
+- **Gerenciamento de Torneios**
+  - Criação de diversos formatos de torneio (Super 8 Individual, Super 12 Duplas)
+  - Geração automática de partidas e rodadas
+  - Configuração flexível de regras e pontuações
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- **Cadastro de Jogadores**
+  - Perfis completos com histórico de partidas
+  - Sistema de busca avançada
+  - Acompanhamento de estatísticas individuais
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- **Sistema de Ranking**
+  - Ranking geral baseado em pontos acumulados
+  - Estatísticas detalhadas (vitórias, derrotas, parceiros)
+  - Visualização pública do ranking
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- **Gerenciamento de Partidas**
+  - Registros de resultados
+  - Histórico completo
+  - Impacto automatizado no ranking
 
-## Laravel Sponsors
+## Tecnologias Utilizadas
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- **Backend:** Laravel 10.x
+- **Frontend:** Tailwind CSS, Alpine.js
+- **Autenticação:** Laravel Breeze
+- **Banco de Dados:** MySQL
 
-### Premium Partners
+## Requisitos de Sistema
+
+- PHP >= 8.1
+- Composer
+- Node.js e NPM
+- MySQL
+
+## Instalação
+
+1. Clone o repositório
+   ```bash
+   git clone https://seurepositorio/skyarena.git
+   cd skyarena
+   ```
+
+2. Instale as dependências
+   ```bash
+   composer install
+   npm install
+   ```
+
+3. Configure o ambiente
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+
+4. Configure seu banco de dados no arquivo `.env`
+
+5. Execute as migrações
+   ```bash
+   php artisan migrate --seed
+   ```
+
+6. Compile os assets
+   ```bash
+   npm run build
+   ```
+
+7. Inicie o servidor
+   ```bash
+   php artisan serve
+   ```
+
+## Acesso ao Sistema
+
+- **Área Administrativa:** /login
+- **Visualização do Ranking:** /
+- **Estatísticas de Jogadores:** /player-stats
+
+## Créditos
+
+Desenvolvido com Laravel, o framework PHP com sintaxe elegante e expressiva. Mais informações sobre o Laravel podem ser encontradas na [documentação oficial](https://laravel.com/docs).
+
+## Licença
+
+O sistema SKY ARENA é um software proprietário.
+O Laravel framework é um software de código aberto licenciado sob a [licença MIT](https://opensource.org/licenses/MIT).
+
+## Sobre o Laravel
+
+Laravel é um framework de aplicações web com sintaxe expressiva e elegante. Acreditamos que o desenvolvimento deve ser uma experiência agradável e criativa para ser verdadeiramente gratificante. O Laravel elimina as dificuldades do desenvolvimento facilitando tarefas comuns utilizadas em muitos projetos web, como:
+
+- [Motor de rotas simples e rápido](https://laravel.com/docs/routing).
+- [Poderoso container de injeção de dependências](https://laravel.com/docs/container).
+- Múltiplos back-ends para armazenamento de [sessão](https://laravel.com/docs/session) e [cache](https://laravel.com/docs/cache).
+- [ORM de banco de dados](https://laravel.com/docs/eloquent) expressivo e intuitivo.
+- [Migrações de schema](https://laravel.com/docs/migrations) independentes de banco de dados.
+- [Processamento robusto de jobs em background](https://laravel.com/docs/queues).
+- [Transmissão de eventos em tempo real](https://laravel.com/docs/broadcasting).
+
+O Laravel é acessível, poderoso e fornece as ferramentas necessárias para aplicações grandes e robustas.
+
+## Aprendendo Laravel
+
+O Laravel possui a mais extensa e completa [documentação](https://laravel.com/docs) e biblioteca de tutoriais em vídeo entre todos os frameworks de aplicações web modernos, tornando fácil começar a usar o framework.
+
+Você também pode experimentar o [Laravel Bootcamp](https://bootcamp.laravel.com), onde será guiado na construção de uma aplicação Laravel moderna do zero.
+
+Se você não gosta de ler, o [Laracasts](https://laracasts.com) pode ajudar. O Laracasts contém milhares de tutoriais em vídeo sobre uma variedade de tópicos, incluindo Laravel, PHP moderno, testes unitários e JavaScript. Melhore suas habilidades explorando nossa abrangente biblioteca de vídeos.
+
+## Patrocinadores do Laravel
+
+Gostaríamos de estender nossos agradecimentos aos seguintes patrocinadores por financiarem o desenvolvimento do Laravel. Se você está interessado em se tornar um patrocinador, visite o [programa de parceiros do Laravel](https://partners.laravel.com).
+
+### Parceiros Premium
 
 - **[Vehikl](https://vehikl.com/)**
 - **[Tighten Co.](https://tighten.co)**
@@ -49,18 +143,14 @@ We would like to extend our thanks to the following sponsors for funding Laravel
 - **[byte5](https://byte5.de)**
 - **[OP.GG](https://op.gg)**
 
-## Contributing
+## Contribuindo
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Obrigado por considerar contribuir para o framework Laravel! O guia de contribuição pode ser encontrado na [documentação do Laravel](https://laravel.com/docs/contributions).
 
-## Code of Conduct
+## Código de Conduta
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Para garantir que a comunidade Laravel seja acolhedora para todos, por favor, revise e respeite o [Código de Conduta](https://laravel.com/docs/contributions#code-of-conduct).
 
-## Security Vulnerabilities
+## Vulnerabilidades de Segurança
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Se você descobrir uma vulnerabilidade de segurança no Laravel, envie um e-mail para Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). Todas as vulnerabilidades de segurança serão prontamente tratadas.
