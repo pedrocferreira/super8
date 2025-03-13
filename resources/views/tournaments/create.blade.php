@@ -55,7 +55,10 @@
                                     Super 8 Individual
                                 </option>
                                 <option value="super_12_fixed_pairs" {{ old('type') == 'super_12_fixed_pairs' ? 'selected' : '' }}>
-                                    Super 12 Duplas Fixas
+                                    Super 12 Duplas Sorteadas
+                                </option>
+                                <option value="super_12_selected_pairs" {{ old('type') == 'super_12_selected_pairs' ? 'selected' : '' }}>
+                                    Super 12 Duplas Pré-selecionadas
                                 </option>
                             </select>
                             @error('type')

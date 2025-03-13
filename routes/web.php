@@ -69,6 +69,20 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
     // Dentro do grupo de rotas autenticadas
     Route::patch('matches/{match}/update-score', [MatchController::class, 'updateScore'])
         ->name('matches.update-score');
+
+    // Dentro do grupo de rotas autenticadas
+    Route::get('/tournaments/{tournament}/select-pairs', [TournamentController::class, 'selectPairsForm'])
+        ->name('tournaments.select-pairs-form');
+    Route::post('/tournaments/{tournament}/select-pairs', [TournamentController::class, 'storePairs'])
+        ->name('tournaments.store-pairs');
+
+    // Adicione esta nova rota
+    Route::get('/tournaments/{tournament}/pairs', [TournamentController::class, 'showPairs'])
+        ->name('tournaments.show-pairs');
+
+    // Dentro do grupo middleware auth
+    Route::post('/tournaments/{tournament}/generate-random-pairs', [TournamentController::class, 'generateRandomPairs'])
+        ->name('tournaments.generate-random-pairs');
 });
 
 // Rotas públicas para estatísticas dos jogadores

@@ -9,8 +9,8 @@ use Carbon\Carbon;
 use App\Models\Player;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
-use App\Helpers\Logger;
 use Illuminate\Support\Str;
+use App\Models\Pair;
 
 class TournamentController extends Controller
 {
@@ -39,7 +39,7 @@ class TournamentController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'location' => 'required|string|max:255',
-            'type' => 'required|in:super_8_individual,super_12_fixed_pairs',
+            'type' => 'required|in:super_8_individual,super_12_fixed_pairs,super_12_selected_pairs',
             'number_of_courts' => 'required|integer|min:1|max:10',
         ]);
 
@@ -52,6 +52,7 @@ class TournamentController extends Controller
             $validated['min_players'] = 8;
             $validated['max_players'] = 8;
         } else {
+            // Tanto para super_12_fixed_pairs quanto para super_12_selected_pairs
             $validated['min_players'] = 12;
             $validated['max_players'] = 12;
         }
@@ -82,13 +83,22 @@ class TournamentController extends Controller
     public function show(Tournament $tournament, Request $request)
     {
         try {
-            Logger::info("=== Início do carregamento do torneio ===");
-            Logger::info("ID: " . $tournament->id);
-            Logger::info("Tipo: " . $tournament->type);
-            Logger::info("Status: " . $tournament->status);
+            // Função de log personalizada
+            $logInfo = function($message) {
+                error_log("[INFO] " . $message);
+            };
+            
+            $logError = function($message) {
+                error_log("[ERROR] " . $message);
+            };
+            
+            $logInfo("=== Início do carregamento do torneio ===");
+            $logInfo("ID: " . $tournament->id);
+            $logInfo("Tipo: " . $tournament->type);
+            $logInfo("Status: " . $tournament->status);
 
             // Carrega as relações necessárias
-        $tournament->load([
+            $tournament->load([
                 'rounds' => function($query) {
                     $query->orderBy('round_number');
                 },
@@ -96,19 +106,18 @@ class TournamentController extends Controller
                     $query->orderBy('scheduled_time');
                 },
                 'rounds.matches.court',
-            'rounds.matches.team1_player1',
-            'rounds.matches.team1_player2',
-            'rounds.matches.team2_player1',
-            'rounds.matches.team2_player2',
-            'playerScores.player'
-        ]);
+                'rounds.matches.team1_player1',
+                'rounds.matches.team1_player2',
+                'rounds.matches.team2_player1',
+                'rounds.matches.team2_player2',
+                'playerScores.player'
+            ]);
 
             $playerRanking = [];
 
             // Carrega o ranking
             if ($tournament->type === 'super_12_fixed_pairs') {
                 try {
-                    Logger::info("Calculando ranking para Super 12 Duplas Fixas");
                     $fixedPairs = [];
                     
                     if (!$tournament->rounds->isEmpty()) {
@@ -162,16 +171,10 @@ class TournamentController extends Controller
                                                 $fixedPairs[$team1Key]['points'] = (int)($fixedPairs[$team1Key]['points'] ?? 0) + 2;
                                                 $fixedPairs[$team1Key]['games_won'] = (int)($fixedPairs[$team1Key]['games_won'] ?? 0) + 1;
                                                 $fixedPairs[$team2Key]['games_lost'] = (int)($fixedPairs[$team2Key]['games_lost'] ?? 0) + 1;
-                                                
-                                                // Registra para depuração
-                                                Logger::info("Partida {$match->id}: Pontos adicionados para dupla {$team1Key} - agora tem {$fixedPairs[$team1Key]['points']} pontos");
                                             } else {
                                                 $fixedPairs[$team2Key]['points'] = (int)($fixedPairs[$team2Key]['points'] ?? 0) + 2;
                                                 $fixedPairs[$team2Key]['games_won'] = (int)($fixedPairs[$team2Key]['games_won'] ?? 0) + 1;
                                                 $fixedPairs[$team1Key]['games_lost'] = (int)($fixedPairs[$team1Key]['games_lost'] ?? 0) + 1;
-                                                
-                                                // Registra para depuração
-                                                Logger::info("Partida {$match->id}: Pontos adicionados para dupla {$team2Key} - agora tem {$fixedPairs[$team2Key]['points']} pontos");
                                             }
                                         }
                                     }
@@ -227,8 +230,6 @@ class TournamentController extends Controller
                             
                             // Quarto critério: confronto direto
                             if (isset($directMatches[$keyA][$keyB])) {
-                                Logger::info("Desempate por confronto direto entre {$keyA} e {$keyB}: " . 
-                                             ($directMatches[$keyA][$keyB] ? "{$keyA} venceu" : "{$keyB} venceu"));
                                 return $directMatches[$keyA][$keyB] ? -1 : 1;
                             }
                             
@@ -241,23 +242,11 @@ class TournamentController extends Controller
                         foreach ($fixedPairs as $key => $pair) {
                             $fixedPairs[$key]['position'] = $position++;
                         }
-                        
-                        // Registre o ranking para depuração
-                        Logger::info("Ranking calculado: " . json_encode(array_map(function($pair) {
-                            return [
-                                'dupla' => $pair['player1']->name . ' & ' . $pair['player2']->name,
-                                'pontos' => $pair['points'],
-                                'vitórias' => $pair['games_won'],
-                                'derrotas' => $pair['games_lost'],
-                                'posição' => $pair['position'] ?? 'N/A'
-                            ];
-                        }, $fixedPairs)));
                     }
                     
                     $playerRanking = $fixedPairs;
                     
                 } catch (\Exception $e) {
-                    Logger::error("Erro ao calcular ranking de duplas: " . $e->getMessage());
                     $playerRanking = [];
                 }
             } else {
@@ -284,20 +273,20 @@ class TournamentController extends Controller
                 ->pluck('players.id')
                 ->toArray();
 
-            Logger::info("=== Fim do carregamento do torneio ===");
+            $logInfo("=== Fim do carregamento do torneio ===");
 
-        return view('tournaments.show', compact(
-            'tournament',
-            'player',
-            'playerRanking',
-            'availablePlayers',
-            'selectedPlayers'
-        ));
+            return view('tournaments.show', compact(
+                'tournament',
+                'player',
+                'playerRanking',
+                'availablePlayers',
+                'selectedPlayers'
+            ));
 
         } catch (\Exception $e) {
-            Logger::error("Erro ao mostrar torneio: " . $e->getMessage());
-            Logger::error("File: " . $e->getFile() . ":" . $e->getLine());
-            Logger::error("Stack trace: " . $e->getTraceAsString());
+            $logError("Erro ao mostrar torneio: " . $e->getMessage());
+            $logError("File: " . $e->getFile() . ":" . $e->getLine());
+            $logError("Stack trace: " . $e->getTraceAsString());
             
             return redirect()
                 ->route('tournaments.index')
@@ -329,222 +318,52 @@ class TournamentController extends Controller
         //
     }
 
-    public function generateMatches(Tournament $tournament)
+    /**
+     * Gera partidas para o torneio.
+     */
+    public function generateMatches(Request $request, Tournament $tournament)
     {
         try {
+            error_log("[INFO] Iniciando geração de partidas para torneio {$tournament->id} - {$tournament->name} do tipo {$tournament->type}");
+            
+            // Verificar tipo de torneio e chamar método correspondente
             if ($tournament->type === 'super_8_individual') {
                 $this->generateSuper8Matches($tournament);
-            } else {
+            } elseif ($tournament->type === 'super_12_fixed_pairs') {
                 $this->generateSuper12Matches($tournament);
+            } elseif ($tournament->type === 'super_12_selected_pairs') {
+                // Verificar se as duplas foram definidas
+                $pairsCount = Pair::where('tournament_id', $tournament->id)->count();
+                if ($pairsCount < 6) {
+                    return back()->with('error', 'Você precisa definir as 6 duplas antes de gerar as partidas.');
+                }
+                
+                $this->generateSuper12SelectedPairsMatches($tournament);
+            } else {
+                throw new \Exception("Tipo de torneio não suportado: {$tournament->type}");
             }
-
-            return redirect()
-                ->route('tournaments.show', $tournament)
+            
+            // Atualiza o status do torneio
+            $tournament->update(['status' => 'in_progress']);
+            
+            return redirect()->route('tournaments.show', $tournament)
                 ->with('success', 'Partidas geradas com sucesso!');
         } catch (\Exception $e) {
-            Logger::error("Erro ao gerar partidas: " . $e->getMessage());
-            Logger::error($e->getTraceAsString());
-
-            return redirect()
-                ->route('tournaments.show', $tournament)
-                ->with('error', 'Erro ao gerar partidas. Por favor, tente novamente.');
+            error_log("[ERROR] Erro ao gerar partidas: " . $e->getMessage());
+            error_log("[ERROR] Stack trace: " . $e->getTraceAsString());
+            
+            return redirect()->route('tournaments.show', $tournament)
+                ->with('error', 'Erro ao gerar partidas: ' . $e->getMessage());
         }
     }
 
+    /**
+     * Gera partidas para torneio Super 8 Individual
+     */
     private function generateSuper8Matches(Tournament $tournament)
     {
-        $logFile = base_path('debug.log');
-        $log = function($message) use ($logFile) {
-            file_put_contents($logFile, date('[Y-m-d H:i:s] ') . $message . "\n", FILE_APPEND);
-        };
-
         try {
-            $log('Iniciando geração de partidas Super 8');
-
-        // Pega todas as quadras ativas
-        $courts = $tournament->courts()->where('is_active', true)->get();
-        $courtCount = $courts->count();
-
-        if ($courtCount === 0) {
-            throw new \Exception('Não há quadras disponíveis para o torneio.');
-        }
-
-        // Lista de jogadores
-        $players = $tournament->players()->get();
-            $playerCount = $players->count();
-
-            if ($playerCount !== 8) {
-                throw new \Exception("Número incorreto de jogadores. Necessário: 8, Atual: {$playerCount}");
-            }
-
-            // Gera todas as combinações possíveis de rodadas
-            $playerIds = $players->pluck('id')->toArray();
-            $rounds = $this->generateRoundCombinations($playerIds);
-            
-            $log("Total de rodadas geradas: " . count($rounds));
-
-            // Cria as rodadas no banco
-            foreach ($rounds as $roundNumber => $roundPairs) {
-                $log("Criando rodada " . ($roundNumber + 1));
-                
-                $round = $tournament->rounds()->create([
-                    'round_number' => $roundNumber + 1
-                ]);
-
-                // Cria as partidas da rodada
-                foreach ($roundPairs as $matchIndex => $match) {
-                    $courtIndex = $matchIndex % $courtCount;
-                    $court = $courts[$courtIndex];
-
-                    $matchTimeOffset = floor($matchIndex / $courtCount) * 2;
-                    $scheduledTime = Carbon::now()
-                        ->setTime(9, 0)
-                        ->addDays($roundNumber)
-                        ->addHours($matchTimeOffset);
-
-                    $log("Criando partida - Rodada: " . ($roundNumber + 1) . 
-                         ", Time1: {$match[0][0]},{$match[0][1]} vs Time2: {$match[1][0]},{$match[1][1]}");
-
-                $round->matches()->create([
-                    'court_id' => $court->id,
-                        'team1_player1_id' => $match[0][0],
-                        'team1_player2_id' => $match[0][1],
-                        'team2_player1_id' => $match[1][0],
-                        'team2_player2_id' => $match[1][1],
-                    'scheduled_time' => $scheduledTime,
-                    'status' => 'scheduled'
-                ]);
-            }
-        }
-
-        // Atualiza o status do torneio
-        $tournament->update(['status' => 'in_progress']);
-            $log("Torneio atualizado para status: in_progress");
-
-        } catch (\Exception $e) {
-            $log("ERRO em generateSuper8Matches: " . $e->getMessage());
-            $log("Stack trace:\n" . $e->getTraceAsString());
-            throw $e;
-        }
-    }
-
-    private function generateRoundCombinations($players)
-    {
-        // Embaralha os jogadores para aumentar a aleatoriedade
-        shuffle($players);
-        
-        $rounds = [];
-        $usedPairs = [];
-        $usedMatches = [];
-
-        // Precisamos de 7 rodadas
-        for ($round = 0; $round < 7; $round++) {
-            $roundPairs = [];
-            $availablePlayers = $players;
-
-            // Cada rodada tem 2 partidas
-            while (count($availablePlayers) >= 4) {
-                // Tenta encontrar uma combinação válida de 4 jogadores
-                $validCombination = $this->findValidCombination(
-                    $availablePlayers,
-                    $usedPairs,
-                    $usedMatches
-                );
-
-                if (!$validCombination) {
-                    // Se não encontrou combinação válida, recomeça a geração
-                    return $this->generateRoundCombinations($players);
-                }
-
-                $pair1 = $validCombination[0];
-                $pair2 = $validCombination[1];
-
-                // Registra os pares e a partida
-                $usedPairs[] = $pair1;
-                $usedPairs[] = $pair2;
-                $usedMatches[] = [$pair1, $pair2];
-
-                // Remove os jogadores usados
-                $availablePlayers = array_diff($availablePlayers, array_merge($pair1, $pair2));
-
-                $roundPairs[] = [$pair1, $pair2];
-            }
-
-            $rounds[] = $roundPairs;
-        }
-
-        return $rounds;
-    }
-
-    private function findValidCombination($players, $usedPairs, $usedMatches)
-    {
-        // Tenta todas as combinações possíveis de 4 jogadores
-        $attempts = 0;
-        $maxAttempts = 100;
-
-        while ($attempts < $maxAttempts) {
-            $attempts++;
-            
-            // Escolhe 4 jogadores aleatórios
-            $fourPlayers = array_rand(array_flip($players), 4);
-            
-            // Tenta todas as combinações possíveis de pares com esses 4 jogadores
-            for ($i = 0; $i < 3; $i++) {
-                for ($j = $i + 1; $j < 4; $j++) {
-                    $pair1 = [$fourPlayers[$i], $fourPlayers[$j]];
-                    $remainingPlayers = array_diff($fourPlayers, $pair1);
-                    $pair2 = array_values($remainingPlayers);
-
-                    // Verifica se esta combinação é válida
-                    if (!$this->pairHasPlayed($pair1, $usedPairs) &&
-                        !$this->pairHasPlayed($pair2, $usedPairs) &&
-                        !$this->matchHasOccurred($pair1, $pair2, $usedMatches)) {
-                        return [$pair1, $pair2];
-                    }
-                }
-            }
-        }
-
-        return null;
-    }
-
-    private function pairHasPlayed($pair, $usedPairs)
-    {
-        foreach ($usedPairs as $usedPair) {
-            if (($pair[0] == $usedPair[0] && $pair[1] == $usedPair[1]) ||
-                ($pair[0] == $usedPair[1] && $pair[1] == $usedPair[0])) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private function matchHasOccurred($pair1, $pair2, $usedMatches)
-    {
-        foreach ($usedMatches as $match) {
-            if ($this->pairsAreEqual($match[0], $pair1) && $this->pairsAreEqual($match[1], $pair2) ||
-                $this->pairsAreEqual($match[0], $pair2) && $this->pairsAreEqual($match[1], $pair1)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private function pairsAreEqual($pair1, $pair2)
-    {
-        return ($pair1[0] == $pair2[0] && $pair1[1] == $pair2[1]) ||
-               ($pair1[0] == $pair2[1] && $pair1[1] == $pair2[0]);
-    }
-
-    private function generateSuper12Matches(Tournament $tournament)
-    {
-        $logFile = base_path('debug.log');
-        $log = function($message) use ($logFile) {
-            file_put_contents($logFile, date('[Y-m-d H:i:s] ') . $message . "\n", FILE_APPEND);
-        };
-
-        try {
-            $log('Iniciando geração de partidas Super 12 Duplas Fixas');
+            error_log('[INFO] Iniciando geração de partidas Super 8 Individual');
 
             // Pega todas as quadras ativas
             $courts = $tournament->courts()->where('is_active', true)->get();
@@ -557,32 +376,126 @@ class TournamentController extends Controller
             // Lista de jogadores
             $players = $tournament->players()->get();
             $playerCount = $players->count();
+            
+            if ($playerCount !== 8) {
+                throw new \Exception("Número incorreto de jogadores. Necessário: 8, Atual: {$playerCount}");
+            }
 
+            // Cria todas as combinações possíveis de jogos (28 jogos)
+            $allMatches = [];
+            for ($i = 0; $i < 7; $i++) {
+                for ($j = $i + 1; $j < 8; $j++) {
+                    $allMatches[] = [$i, $j];
+                }
+            }
+            
+            // Distribuir os jogos em 4 rodadas
+            $rounds = [[], [], [], []];
+            
+            // Verifica quantos jogos por rodada (7 jogos por rodada)
+            $matchesPerRound = 7;
+            
+            // Embaralha os jogos para distribuição aleatória
+            shuffle($allMatches);
+            
+            // Criar as rodadas (4 rodadas com 7 jogos cada)
+            for ($roundNumber = 0; $roundNumber < 4; $roundNumber++) {
+                $round = $tournament->rounds()->create([
+                    'round_number' => $roundNumber + 1
+                ]);
+                
+                // Pegar 7 jogos para esta rodada
+                $roundMatches = array_slice($allMatches, $roundNumber * $matchesPerRound, $matchesPerRound);
+                
+                foreach ($roundMatches as $matchIndex => $match) {
+                    $player1Index = $match[0];
+                    $player2Index = $match[1];
+                    
+                    $courtIndex = $matchIndex % $courtCount;
+                    $court = $courts[$courtIndex];
+                    
+                    $matchTimeOffset = floor($matchIndex / $courtCount) * 1;
+                    $scheduledTime = Carbon::now()
+                        ->setTime(9, 0)
+                        ->addDays($roundNumber)
+                        ->addHours($matchTimeOffset);
+                    
+                    $round->matches()->create([
+                        'court_id' => $court->id,
+                        'team1_player1_id' => $players[$player1Index]->id,
+                        'team2_player1_id' => $players[$player2Index]->id,
+                        'scheduled_time' => $scheduledTime,
+                        'status' => 'scheduled'
+                    ]);
+                }
+            }
+            
+            error_log('[INFO] Geração de partidas Super 8 Individual concluída com sucesso');
+            
+        } catch (\Exception $e) {
+            error_log('[ERROR] ' . $e->getMessage());
+            error_log('[ERROR] Stack trace: ' . $e->getTraceAsString());
+            throw $e;
+        }
+    }
+
+    /**
+     * Gera partidas para torneio Super 12 com duplas fixas (sorteadas)
+     */
+    private function generateSuper12Matches(Tournament $tournament)
+    {
+        try {
+            error_log('[INFO] Iniciando geração de partidas Super 12 Duplas Fixas');
+
+            // Pega todas as quadras ativas
+            $courts = $tournament->courts()->where('is_active', true)->get();
+            $courtCount = $courts->count();
+            
+            if ($courtCount === 0) {
+                throw new \Exception('Não há quadras disponíveis para o torneio.');
+            }
+
+            // Lista de jogadores
+            $players = $tournament->players()->get();
+            $playerCount = $players->count();
+            
             if ($playerCount !== 12) {
                 throw new \Exception("Número incorreto de jogadores. Necessário: 12, Atual: {$playerCount}");
             }
 
-            // Criar as 6 duplas fixas
-            $playerIds = $players->pluck('id')->toArray();
-            shuffle($playerIds);
+            // Embaralha os jogadores aleatoriamente
+            $shuffledPlayers = $players->shuffle()->values();
             
-            $fixedPairs = [];
-            for ($i = 0; $i < 12; $i += 2) {
-                $fixedPairs[] = [
-                    $playerIds[$i],
-                    $playerIds[$i + 1]
+            // Formar duplas aleatoriamente
+            $pairs = [];
+            for ($i = 0; $i < 6; $i++) {
+                $player1 = $shuffledPlayers[2 * $i];
+                $player2 = $shuffledPlayers[2 * $i + 1];
+                
+                $pairs[] = [
+                    'player1' => $player1,
+                    'player2' => $player2
                 ];
+                
+                // Salvar a dupla no banco
+                Pair::create([
+                    'tournament_id' => $tournament->id,
+                    'player1_id' => $player1->id,
+                    'player2_id' => $player2->id
+                ]);
             }
+            
+            error_log('[INFO] 6 duplas formadas aleatoriamente');
 
-            $log("Duplas fixas formadas: " . json_encode($fixedPairs));
-
-            // Gerar todas as combinações possíveis de confrontos
+            // Gerar todas as combinações possíveis de confrontos (15 jogos)
             $allMatches = [];
             for ($i = 0; $i < 5; $i++) {
                 for ($j = $i + 1; $j < 6; $j++) {
                     $allMatches[] = [$i, $j];
                 }
             }
+            
+            error_log('[INFO] Total de confrontos possíveis: 15');
 
             // Distribuir os 15 jogos em 5 rodadas com 3 jogos cada
             $rounds = [[], [], [], [], []];
@@ -590,7 +503,7 @@ class TournamentController extends Controller
 
             // Para cada rodada
             for ($roundNumber = 0; $roundNumber < 5; $roundNumber++) {
-                $availableMatches = array_filter($allMatches, function($match) use ($rounds, $roundNumber, $pairGamesPerRound) {
+                $availableMatches = array_filter($allMatches, function($match) use ($pairGamesPerRound, $roundNumber) {
                     $pair1 = $match[0];
                     $pair2 = $match[1];
                     
@@ -624,11 +537,12 @@ class TournamentController extends Controller
                 }
                 
                 $rounds[$roundNumber] = $roundMatches;
+                error_log('[INFO] Rodada ' . ($roundNumber + 1) . ' configurada com ' . count($roundMatches) . ' partidas');
             }
 
             // Criar as rodadas no banco
             foreach ($rounds as $roundNumber => $matches) {
-                $log("Gerando rodada " . ($roundNumber + 1) . " com " . count($matches) . " jogos");
+                error_log('[INFO] Criando rodada ' . ($roundNumber + 1) . ' no banco de dados');
                 
                 $round = $tournament->rounds()->create([
                     'round_number' => $roundNumber + 1
@@ -647,29 +561,29 @@ class TournamentController extends Controller
                         ->addDays($roundNumber)
                         ->addHours($matchTimeOffset);
 
-                    $log("Criando partida - Rodada: " . ($roundNumber + 1) . 
-                         ", Dupla {$pair1Index} vs Dupla {$pair2Index}" .
-                         ", Quadra: {$court->id}, Horário: {$scheduledTime->format('H:i')}");
+                    $pair1 = $pairs[$pair1Index];
+                    $pair2 = $pairs[$pair2Index];
+
+                    error_log('[INFO] Criando partida: Dupla ' . $pair1['player1']->name . '/' . $pair1['player2']->name . 
+                         ' vs ' . $pair2['player1']->name . '/' . $pair2['player2']->name);
 
                     $round->matches()->create([
                         'court_id' => $court->id,
-                        'team1_player1_id' => $fixedPairs[$pair1Index][0],
-                        'team1_player2_id' => $fixedPairs[$pair1Index][1],
-                        'team2_player1_id' => $fixedPairs[$pair2Index][0],
-                        'team2_player2_id' => $fixedPairs[$pair2Index][1],
+                        'team1_player1_id' => $pair1['player1']->id,
+                        'team1_player2_id' => $pair1['player2']->id,
+                        'team2_player1_id' => $pair2['player1']->id,
+                        'team2_player2_id' => $pair2['player2']->id,
                         'scheduled_time' => $scheduledTime,
                         'status' => 'scheduled'
                     ]);
                 }
             }
 
-            // Atualiza o status do torneio
-            $tournament->update(['status' => 'in_progress']);
-            $log("Torneio atualizado para status: in_progress");
+            error_log('[INFO] Geração de partidas Super 12 Duplas Fixas concluída com sucesso');
 
         } catch (\Exception $e) {
-            $log("ERRO em generateSuper12Matches: " . $e->getMessage());
-            $log("Stack trace:\n" . $e->getTraceAsString());
+            error_log('[ERROR] ' . $e->getMessage());
+            error_log('[ERROR] Stack trace: ' . $e->getTraceAsString());
             throw $e;
         }
     }
@@ -710,8 +624,6 @@ class TournamentController extends Controller
                 'team2_score' => 'required|integer|min:0'
             ]);
 
-            Logger::info("Atualizando placar da partida {$matchId}: {$validated['team1_score']} x {$validated['team2_score']}");
-
             if ($validated['team1_score'] === $validated['team2_score']) {
                 return back()->with('error', 'O placar não pode ser empate.');
             }
@@ -720,14 +632,11 @@ class TournamentController extends Controller
             // Define explicitamente o vencedor com base nas regras do jogo
             if ($validated['team1_score'] >= 6) {
                 $winnerTeam = 'team1';
-                Logger::info("Time 1 venceu com {$validated['team1_score']} pontos");
             } elseif ($validated['team2_score'] >= 6) {
                 $winnerTeam = 'team2';
-                Logger::info("Time 2 venceu com {$validated['team2_score']} pontos");
             } else {
                 // Se nenhum time atingiu 6 pontos, quem tem mais pontos vence
                 $winnerTeam = $validated['team1_score'] > $validated['team2_score'] ? 'team1' : 'team2';
-                Logger::info("Vencedor determinado pelo maior placar: {$winnerTeam}");
             }
             
             // Armazena o placar e o vencedor
@@ -736,15 +645,11 @@ class TournamentController extends Controller
             $gameMatch->status = 'completed';
             $gameMatch->save();
 
-            Logger::info("Partida {$matchId} atualizada: winner_team={$winnerTeam}, status=completed");
-
             // Atualiza os pontos dos jogadores
             $this->updatePlayerScores($gameMatch);
-            Logger::info("Pontuação dos jogadores atualizada");
 
             return back()->with('success', 'Placar registrado com sucesso!');
         } catch (\Exception $e) {
-            Logger::error("Erro ao atualizar placar: " . $e->getMessage());
             return back()->with('error', 'Erro ao registrar o placar. Por favor, tente novamente.');
         }
     }
@@ -807,6 +712,260 @@ class TournamentController extends Controller
         } else {
             $score1->increment('games_lost');
             $score2->increment('games_lost');
+        }
+    }
+
+    /**
+     * Exibe o formulário para seleção de duplas.
+     */
+    public function selectPairsForm(Tournament $tournament)
+    {
+        // Verificar se o torneio é do tipo correto
+        if ($tournament->type !== 'super_12_selected_pairs') {
+            return redirect()->route('tournaments.show', $tournament)
+                ->with('error', 'Este torneio não suporta seleção manual de duplas.');
+        }
+
+        // Obter todos os jogadores selecionados para o torneio
+        $players = $tournament->players()->get();
+        
+        // Verificar se há jogadores suficientes
+        if ($players->count() < 12) {
+            return redirect()->route('tournaments.show', $tournament)
+                ->with('error', 'Este torneio precisa ter 12 jogadores selecionados antes de definir as duplas.');
+        }
+        
+        // Verificar se já existem pares formados
+        $existingPairs = Pair::where('tournament_id', $tournament->id)->get()
+            ->pluck('player2_id', 'player1_id')->toArray();
+
+        return view('tournaments.select-pairs', compact('tournament', 'players', 'existingPairs'));
+    }
+
+    /**
+     * Armazena as duplas selecionadas.
+     */
+    public function storePairs(Request $request, Tournament $tournament)
+    {
+        // Validar os dados recebidos
+        $validated = $request->validate([
+            'pairs' => 'required|array|size:6',
+            'pairs.*' => 'required|array',
+            'pairs.*.player1' => 'required|exists:players,id',
+            'pairs.*.player2' => 'required|exists:players,id',
+        ]);
+
+        try {
+            // Verificar por jogadores duplicados
+            $allPlayers = [];
+            foreach ($validated['pairs'] as $pair) {
+                $allPlayers[] = $pair['player1'];
+                $allPlayers[] = $pair['player2'];
+            }
+            
+            if (count($allPlayers) !== count(array_unique($allPlayers))) {
+                return back()->with('error', 'Um jogador não pode estar em mais de uma dupla.');
+            }
+            
+            // Iniciar uma transação para garantir integridade
+            DB::beginTransaction();
+            
+            // Remover pares existentes
+            Pair::where('tournament_id', $tournament->id)->delete();
+            
+            // Criar novos pares
+            foreach ($validated['pairs'] as $pair) {
+                Pair::create([
+                    'tournament_id' => $tournament->id,
+                    'player1_id' => $pair['player1'],
+                    'player2_id' => $pair['player2'],
+                ]);
+            }
+            
+            // Se tudo correr bem, confirmar as alterações
+            DB::commit();
+            
+            // Manter status como 'open'
+            
+            return redirect()->route('tournaments.show', $tournament)
+                ->with('success', 'Duplas definidas com sucesso!');
+        } catch (\Exception $e) {
+            // Em caso de erro, reverter as alterações
+            DB::rollBack();
+            return back()->with('error', 'Erro ao definir as duplas: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Gera partidas para torneio Super 12 com duplas pré-selecionadas
+     */
+    private function generateSuper12SelectedPairsMatches(Tournament $tournament)
+    {
+        try {
+            // Verificar se as duplas foram selecionadas
+            $pairs = Pair::where('tournament_id', $tournament->id)->get();
+            
+            if ($pairs->count() !== 6) {
+                throw new \Exception("Número incorreto de duplas. Necessário: 6, Encontrado: {$pairs->count()}");
+            }
+            
+            // Obter as quadras disponíveis
+            $courts = $tournament->courts()->where('is_active', true)->get();
+            $courtCount = $courts->count();
+            
+            if ($courtCount === 0) {
+                throw new \Exception('Não há quadras disponíveis para o torneio.');
+            }
+
+            // Gerar todas as combinações possíveis de confrontos (15 jogos)
+            $allMatches = [];
+            for ($i = 0; $i < 5; $i++) {
+                for ($j = $i + 1; $j < 6; $j++) {
+                    $allMatches[] = [$i, $j];
+                }
+            }
+            
+            // Distribuir os 15 jogos em 5 rodadas com 3 jogos cada
+            $rounds = [[], [], [], [], []];
+            $pairGamesPerRound = array_fill(0, 6, array_fill(0, 5, 0)); // [dupla][rodada] = quantidade de jogos
+
+            // Para cada rodada
+            for ($roundNumber = 0; $roundNumber < 5; $roundNumber++) {
+                $availableMatches = array_filter($allMatches, function($match) use ($pairGamesPerRound, $roundNumber) {
+                    $pair1 = $match[0];
+                    $pair2 = $match[1];
+                    
+                    // Verifica se alguma das duplas já joga nesta rodada
+                    return $pairGamesPerRound[$pair1][$roundNumber] == 0 && 
+                           $pairGamesPerRound[$pair2][$roundNumber] == 0;
+                });
+
+                // Pegar 3 jogos para esta rodada
+                $roundMatches = [];
+                $matchCount = 0;
+                
+                foreach ($availableMatches as $match) {
+                    if ($matchCount >= 3) break;
+                    
+                    $pair1 = $match[0];
+                    $pair2 = $match[1];
+                    
+                    // Adicionar o jogo à rodada
+                    $roundMatches[] = $match;
+                    $pairGamesPerRound[$pair1][$roundNumber] = 1;
+                    $pairGamesPerRound[$pair2][$roundNumber] = 1;
+                    
+                    // Remover este jogo dos disponíveis
+                    $key = array_search($match, $allMatches);
+                    if ($key !== false) {
+                        unset($allMatches[$key]);
+                    }
+                    
+                    $matchCount++;
+                }
+                
+                $rounds[$roundNumber] = $roundMatches;
+            }
+
+            // Criar as rodadas no banco
+            foreach ($rounds as $roundNumber => $matches) {
+                $round = $tournament->rounds()->create([
+                    'round_number' => $roundNumber + 1
+                ]);
+
+                foreach ($matches as $matchIndex => $match) {
+                    $pair1Index = $match[0];
+                    $pair2Index = $match[1];
+
+                    $courtIndex = $matchIndex % $courtCount;
+                    $court = $courts[$courtIndex];
+
+                    $matchTimeOffset = floor($matchIndex / $courtCount) * 2;
+                    $scheduledTime = Carbon::now()
+                        ->setTime(9, 0)
+                        ->addDays($roundNumber)
+                        ->addHours($matchTimeOffset);
+
+                    $pair1 = $pairs[$pair1Index];
+                    $pair2 = $pairs[$pair2Index];
+
+                    $round->matches()->create([
+                        'court_id' => $court->id,
+                        'team1_player1_id' => $pair1->player1_id,
+                        'team1_player2_id' => $pair1->player2_id,
+                        'team2_player1_id' => $pair2->player1_id,
+                        'team2_player2_id' => $pair2->player2_id,
+                        'scheduled_time' => $scheduledTime,
+                        'status' => 'scheduled'
+                    ]);
+                }
+            }
+
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * Exibe as duplas de um torneio.
+     */
+    public function showPairs(Tournament $tournament)
+    {
+        $pairs = Pair::where('tournament_id', $tournament->id)
+            ->with(['player1', 'player2'])
+            ->get();
+        
+        return view('tournaments.show-pairs', compact('tournament', 'pairs'));
+    }
+
+    /**
+     * Gerar duplas automaticamente (aleatoriamente)
+     */
+    public function generateRandomPairs(Tournament $tournament)
+    {
+        try {
+            // Verificar o tipo de torneio
+            if ($tournament->type !== 'super_12_selected_pairs') {
+                return back()->with('error', 'Esta função só está disponível para torneios Super 12 com Duplas Pré-selecionadas.');
+            }
+            
+            // Pegar todos os jogadores
+            $players = $tournament->players()->get();
+            
+            // Verificar se há 12 jogadores
+            if ($players->count() !== 12) {
+                return back()->with('error', 'É necessário ter exatamente 12 jogadores selecionados.');
+            }
+            
+            // Embaralhar os jogadores
+            $shuffledPlayers = $players->shuffle();
+            
+            // Iniciar uma transação
+            DB::beginTransaction();
+            
+            // Remover pares existentes
+            Pair::where('tournament_id', $tournament->id)->delete();
+            
+            // Criar 6 duplas aleatórias
+            for ($i = 0; $i < 6; $i++) {
+                $player1 = $shuffledPlayers[2 * $i];
+                $player2 = $shuffledPlayers[2 * $i + 1];
+                
+                Pair::create([
+                    'tournament_id' => $tournament->id,
+                    'player1_id' => $player1->id,
+                    'player2_id' => $player2->id,
+                ]);
+            }
+            
+            // Confirmar transação
+            DB::commit();
+            
+            return redirect()->route('tournaments.show-pairs', $tournament)
+                ->with('success', 'Duplas geradas aleatoriamente com sucesso!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Erro ao gerar duplas: ' . $e->getMessage());
         }
     }
 }

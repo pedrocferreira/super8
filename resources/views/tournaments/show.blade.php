@@ -13,14 +13,26 @@
                     <button type="button"
                             onclick="openSelectPlayersModal()"
                             class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700">
-                        Selecionar Jogadores
+                        Etapa 1: Selecionar Jogadores
                     </button>
                 @elseif($tournament->status === 'open')
+                    @if($tournament->type === 'super_12_selected_pairs')
+                        <a href="{{ route('tournaments.select-pairs-form', $tournament) }}"
+                           class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700">
+                            Etapa 2: Definir Duplas
+                        </a>
+                    @endif
                     <button type="button"
                             onclick="openGenerateMatchesModal()"
                             class="inline-flex items-center px-4 py-2 bg-emerald-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-emerald-700">
-                        Gerar Partidas
+                        Etapa {{ $tournament->type === 'super_12_selected_pairs' ? '3' : '2' }}: Gerar Partidas
                     </button>
+                @endif
+                @if($tournament->type === 'super_12_fixed_pairs' || $tournament->type === 'super_12_selected_pairs')
+                    <a href="{{ route('tournaments.show-pairs', $tournament) }}"
+                       class="inline-flex items-center px-4 py-2 bg-purple-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-purple-700">
+                        Ver Duplas
+                    </a>
                 @endif
             </div>
         </div>
@@ -28,6 +40,19 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <!-- Mensagens de alerta -->
+            @if(session('success'))
+                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+                    {{ session('success') }}
+                </div>
+            @endif
+            
+            @if(session('error'))
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                    {{ session('error') }}
+                </div>
+            @endif
+            
             <!-- Informações Básicas -->
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
                 <div class="p-6">
@@ -291,8 +316,10 @@
                         Tem certeza que deseja gerar as partidas para este torneio?
                             @if($tournament->type === 'super_8_individual')
                                 Serão geradas partidas para o formato Super 8 Individual.
-                            @else
-                                Serão geradas partidas para o formato Super 12 Duplas Fixas.
+                            @elseif($tournament->type === 'super_12_fixed_pairs')
+                                Serão geradas partidas para o formato Super 12 Duplas Sorteadas.
+                            @elseif($tournament->type === 'super_12_selected_pairs')
+                                Serão geradas partidas para o formato Super 12 Duplas Pré-selecionadas.
                             @endif
                     </p>
                 </div>

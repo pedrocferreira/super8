@@ -14,6 +14,20 @@
                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                 </div>
 
+                @if($tournament->type === 'super_12_selected_pairs')
+                <div id="partnerSection" class="mt-4">
+                    <label for="partner_email" class="block text-sm font-medium text-gray-700">Email do Parceiro</label>
+                    <input type="email" 
+                           name="partner_email" 
+                           id="partner_email" 
+                           placeholder="Digite o email do seu parceiro"
+                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    <p class="text-sm text-gray-500 mt-1">
+                        Seu parceiro também deve se inscrever no torneio e informar seu email.
+                    </p>
+                </div>
+                @endif
+
                 <div>
                     <button type="submit"
                             class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">

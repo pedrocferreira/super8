@@ -1,515 +1,189 @@
-[2025-03-10 19:00:40] [ERROR] Erro ao atualizar placar: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'team1_score' in 'SET' (Connection: mysql, SQL: update `matches` set `winner_team` = 1, `score_details` = "6 x 4", `status` = completed, `team1_score` = 6, `team2_score` = 4, `matches`.`updated_at` = 2025-03-10 19:00:40 where `id` = 280)
-[2025-03-10 19:00:40] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 19:00:40] [INFO] ID: 20
-[2025-03-10 19:00:40] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 19:00:40] [INFO] Status: in_progress
-[2025-03-10 19:00:40] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 19:00:40] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 19:11:38] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 19:11:38] [INFO] ID: 20
-[2025-03-10 19:11:38] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 19:11:38] [INFO] Status: in_progress
-[2025-03-10 19:11:38] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 19:11:38] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 19:11:43] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 19:11:43] [INFO] ID: 20
-[2025-03-10 19:11:43] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 19:11:43] [INFO] Status: in_progress
-[2025-03-10 19:11:43] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 19:11:43] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 19:12:02] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 19:12:02] [INFO] ID: 20
-[2025-03-10 19:12:02] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 19:12:02] [INFO] Status: in_progress
-[2025-03-10 19:12:02] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 19:12:02] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 19:12:30] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 19:12:30] [INFO] ID: 20
-[2025-03-10 19:12:30] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 19:12:30] [INFO] Status: in_progress
-[2025-03-10 19:12:30] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 19:12:30] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 19:15:05] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 19:15:05] [INFO] ID: 20
-[2025-03-10 19:15:05] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 19:15:05] [INFO] Status: in_progress
-[2025-03-10 19:15:05] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 19:15:05] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 19:15:42] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 19:15:42] [INFO] ID: 20
-[2025-03-10 19:15:42] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 19:15:42] [INFO] Status: in_progress
-[2025-03-10 19:15:42] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 19:15:42] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 19:15:55] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 19:15:55] [INFO] ID: 20
-[2025-03-10 19:15:55] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 19:15:55] [INFO] Status: in_progress
-[2025-03-10 19:15:55] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 19:15:55] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 19:16:11] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 19:16:11] [INFO] ID: 20
-[2025-03-10 19:16:11] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 19:16:11] [INFO] Status: in_progress
-[2025-03-10 19:16:11] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 19:16:11] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 19:16:36] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 19:16:36] [INFO] ID: 21
-[2025-03-10 19:16:36] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 19:16:36] [INFO] Status: draft
-[2025-03-10 19:16:36] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 19:16:36] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 19:16:50] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 19:16:50] [INFO] ID: 21
-[2025-03-10 19:16:50] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 19:16:50] [INFO] Status: open
-[2025-03-10 19:16:50] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 19:16:50] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 19:16:53] Iniciando geração de partidas Super 12 Duplas Fixas
-[2025-03-10 19:16:53] Duplas fixas formadas: [[3,1],[9,6],[11,4],[10,2],[12,7],[5,8]]
-[2025-03-10 19:16:53] Gerando rodada 1 com 3 jogos
-[2025-03-10 19:16:53] Criando partida - Rodada: 1, Dupla 0 vs Dupla 1, Quadra: 43, Horário: 09:00
-[2025-03-10 19:16:53] Criando partida - Rodada: 1, Dupla 0 vs Dupla 2, Quadra: 44, Horário: 09:00
-[2025-03-10 19:16:53] Criando partida - Rodada: 1, Dupla 0 vs Dupla 3, Quadra: 43, Horário: 11:00
-[2025-03-10 19:16:53] Gerando rodada 2 com 3 jogos
-[2025-03-10 19:16:53] Criando partida - Rodada: 2, Dupla 0 vs Dupla 4, Quadra: 43, Horário: 09:00
-[2025-03-10 19:16:53] Criando partida - Rodada: 2, Dupla 0 vs Dupla 5, Quadra: 44, Horário: 09:00
-[2025-03-10 19:16:53] Criando partida - Rodada: 2, Dupla 1 vs Dupla 2, Quadra: 43, Horário: 11:00
-[2025-03-10 19:16:53] Gerando rodada 3 com 3 jogos
-[2025-03-10 19:16:53] Criando partida - Rodada: 3, Dupla 1 vs Dupla 3, Quadra: 43, Horário: 09:00
-[2025-03-10 19:16:53] Criando partida - Rodada: 3, Dupla 1 vs Dupla 4, Quadra: 44, Horário: 09:00
-[2025-03-10 19:16:53] Criando partida - Rodada: 3, Dupla 1 vs Dupla 5, Quadra: 43, Horário: 11:00
-[2025-03-10 19:16:53] Gerando rodada 4 com 3 jogos
-[2025-03-10 19:16:53] Criando partida - Rodada: 4, Dupla 2 vs Dupla 3, Quadra: 43, Horário: 09:00
-[2025-03-10 19:16:53] Criando partida - Rodada: 4, Dupla 2 vs Dupla 4, Quadra: 44, Horário: 09:00
-[2025-03-10 19:16:53] Criando partida - Rodada: 4, Dupla 2 vs Dupla 5, Quadra: 43, Horário: 11:00
-[2025-03-10 19:16:53] Gerando rodada 5 com 3 jogos
-[2025-03-10 19:16:53] Criando partida - Rodada: 5, Dupla 3 vs Dupla 4, Quadra: 43, Horário: 09:00
-[2025-03-10 19:16:53] Criando partida - Rodada: 5, Dupla 3 vs Dupla 5, Quadra: 44, Horário: 09:00
-[2025-03-10 19:16:53] Criando partida - Rodada: 5, Dupla 4 vs Dupla 5, Quadra: 43, Horário: 11:00
-[2025-03-10 19:16:53] Torneio atualizado para status: in_progress
-[2025-03-10 19:16:53] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 19:16:53] [INFO] ID: 21
-[2025-03-10 19:16:53] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 19:16:53] [INFO] Status: in_progress
-[2025-03-10 19:16:53] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 19:16:53] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 19:17:04] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 19:17:04] [INFO] ID: 21
-[2025-03-10 19:17:04] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 19:17:04] [INFO] Status: in_progress
-[2025-03-10 19:17:04] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 19:17:04] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 19:17:24] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 19:17:24] [INFO] ID: 21
-[2025-03-10 19:17:24] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 19:17:24] [INFO] Status: in_progress
-[2025-03-10 19:17:24] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 19:17:24] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 19:17:46] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 19:17:46] [INFO] ID: 21
-[2025-03-10 19:17:46] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 19:17:46] [INFO] Status: in_progress
-[2025-03-10 19:17:46] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 19:17:46] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 19:17:58] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 19:17:58] [INFO] ID: 21
-[2025-03-10 19:17:58] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 19:17:58] [INFO] Status: in_progress
-[2025-03-10 19:17:58] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 19:17:58] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 19:18:07] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 19:18:07] [INFO] ID: 21
-[2025-03-10 19:18:07] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 19:18:07] [INFO] Status: in_progress
-[2025-03-10 19:18:07] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 19:18:07] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 19:18:44] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 19:18:44] [INFO] ID: 21
-[2025-03-10 19:18:44] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 19:18:44] [INFO] Status: in_progress
-[2025-03-10 19:18:44] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 19:18:44] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 19:20:21] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 19:20:21] [INFO] ID: 21
-[2025-03-10 19:20:21] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 19:20:21] [INFO] Status: in_progress
-[2025-03-10 19:20:21] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 19:20:21] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 19:20:38] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 19:20:38] [INFO] ID: 22
-[2025-03-10 19:20:38] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 19:20:38] [INFO] Status: draft
-[2025-03-10 19:20:38] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 19:20:38] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 19:20:47] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 19:20:47] [INFO] ID: 22
-[2025-03-10 19:20:47] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 19:20:47] [INFO] Status: open
-[2025-03-10 19:20:47] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 19:20:47] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 19:20:50] Iniciando geração de partidas Super 12 Duplas Fixas
-[2025-03-10 19:20:50] Duplas fixas formadas: [[2,7],[3,10],[8,5],[4,9],[6,11],[1,12]]
-[2025-03-10 19:20:50] Gerando rodada 1 com 3 jogos
-[2025-03-10 19:20:50] Criando partida - Rodada: 1, Dupla 0 vs Dupla 1, Quadra: 45, Horário: 09:00
-[2025-03-10 19:20:50] Criando partida - Rodada: 1, Dupla 0 vs Dupla 2, Quadra: 46, Horário: 09:00
-[2025-03-10 19:20:50] Criando partida - Rodada: 1, Dupla 0 vs Dupla 3, Quadra: 45, Horário: 11:00
-[2025-03-10 19:20:50] Gerando rodada 2 com 3 jogos
-[2025-03-10 19:20:50] Criando partida - Rodada: 2, Dupla 0 vs Dupla 4, Quadra: 45, Horário: 09:00
-[2025-03-10 19:20:50] Criando partida - Rodada: 2, Dupla 0 vs Dupla 5, Quadra: 46, Horário: 09:00
-[2025-03-10 19:20:50] Criando partida - Rodada: 2, Dupla 1 vs Dupla 2, Quadra: 45, Horário: 11:00
-[2025-03-10 19:20:50] Gerando rodada 3 com 3 jogos
-[2025-03-10 19:20:50] Criando partida - Rodada: 3, Dupla 1 vs Dupla 3, Quadra: 45, Horário: 09:00
-[2025-03-10 19:20:50] Criando partida - Rodada: 3, Dupla 1 vs Dupla 4, Quadra: 46, Horário: 09:00
-[2025-03-10 19:20:50] Criando partida - Rodada: 3, Dupla 1 vs Dupla 5, Quadra: 45, Horário: 11:00
-[2025-03-10 19:20:50] Gerando rodada 4 com 3 jogos
-[2025-03-10 19:20:50] Criando partida - Rodada: 4, Dupla 2 vs Dupla 3, Quadra: 45, Horário: 09:00
-[2025-03-10 19:20:50] Criando partida - Rodada: 4, Dupla 2 vs Dupla 4, Quadra: 46, Horário: 09:00
-[2025-03-10 19:20:50] Criando partida - Rodada: 4, Dupla 2 vs Dupla 5, Quadra: 45, Horário: 11:00
-[2025-03-10 19:20:50] Gerando rodada 5 com 3 jogos
-[2025-03-10 19:20:50] Criando partida - Rodada: 5, Dupla 3 vs Dupla 4, Quadra: 45, Horário: 09:00
-[2025-03-10 19:20:50] Criando partida - Rodada: 5, Dupla 3 vs Dupla 5, Quadra: 46, Horário: 09:00
-[2025-03-10 19:20:50] Criando partida - Rodada: 5, Dupla 4 vs Dupla 5, Quadra: 45, Horário: 11:00
-[2025-03-10 19:20:50] Torneio atualizado para status: in_progress
-[2025-03-10 19:20:50] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 19:20:50] [INFO] ID: 22
-[2025-03-10 19:20:50] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 19:20:50] [INFO] Status: in_progress
-[2025-03-10 19:20:50] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 19:20:50] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 19:20:57] [INFO] Atualizando placar da partida 310: 6 x 2
-[2025-03-10 19:20:57] [INFO] Time 1 venceu com 6 pontos
-[2025-03-10 19:20:57] [INFO] Partida 310 atualizada: winner_team=1, status=completed
-[2025-03-10 19:20:57] [INFO] Pontuação dos jogadores atualizada
-[2025-03-10 19:20:57] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 19:20:57] [INFO] ID: 22
-[2025-03-10 19:20:57] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 19:20:57] [INFO] Status: in_progress
-[2025-03-10 19:20:57] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 19:20:57] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 19:22:01] [INFO] Atualizando placar da partida 315: 6 x 2
-[2025-03-10 19:22:01] [INFO] Time 1 venceu com 6 pontos
-[2025-03-10 19:22:01] [INFO] Partida 315 atualizada: winner_team=1, status=completed
-[2025-03-10 19:22:01] [INFO] Pontuação dos jogadores atualizada
-[2025-03-10 19:22:01] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 19:22:01] [INFO] ID: 22
-[2025-03-10 19:22:01] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 19:22:01] [INFO] Status: in_progress
-[2025-03-10 19:22:01] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 19:22:01] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 19:22:40] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 19:22:40] [INFO] ID: 22
-[2025-03-10 19:22:40] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 19:22:40] [INFO] Status: in_progress
-[2025-03-10 19:22:40] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 19:22:40] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 19:22:51] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 19:22:51] [INFO] ID: 23
-[2025-03-10 19:22:51] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 19:22:51] [INFO] Status: draft
-[2025-03-10 19:22:51] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 19:22:51] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 19:23:01] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 19:23:01] [INFO] ID: 23
-[2025-03-10 19:23:01] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 19:23:01] [INFO] Status: open
-[2025-03-10 19:23:01] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 19:23:01] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 19:23:05] Iniciando geração de partidas Super 12 Duplas Fixas
-[2025-03-10 19:23:05] Duplas fixas formadas: [[3,10],[8,6],[11,9],[7,4],[12,1],[5,2]]
-[2025-03-10 19:23:05] Gerando rodada 1 com 3 jogos
-[2025-03-10 19:23:05] Criando partida - Rodada: 1, Dupla 0 vs Dupla 1, Quadra: 47, Horário: 09:00
-[2025-03-10 19:23:05] Criando partida - Rodada: 1, Dupla 0 vs Dupla 2, Quadra: 48, Horário: 09:00
-[2025-03-10 19:23:05] Criando partida - Rodada: 1, Dupla 0 vs Dupla 3, Quadra: 47, Horário: 11:00
-[2025-03-10 19:23:05] Gerando rodada 2 com 3 jogos
-[2025-03-10 19:23:05] Criando partida - Rodada: 2, Dupla 0 vs Dupla 4, Quadra: 47, Horário: 09:00
-[2025-03-10 19:23:05] Criando partida - Rodada: 2, Dupla 0 vs Dupla 5, Quadra: 48, Horário: 09:00
-[2025-03-10 19:23:05] Criando partida - Rodada: 2, Dupla 1 vs Dupla 2, Quadra: 47, Horário: 11:00
-[2025-03-10 19:23:05] Gerando rodada 3 com 3 jogos
-[2025-03-10 19:23:05] Criando partida - Rodada: 3, Dupla 1 vs Dupla 3, Quadra: 47, Horário: 09:00
-[2025-03-10 19:23:05] Criando partida - Rodada: 3, Dupla 1 vs Dupla 4, Quadra: 48, Horário: 09:00
-[2025-03-10 19:23:05] Criando partida - Rodada: 3, Dupla 1 vs Dupla 5, Quadra: 47, Horário: 11:00
-[2025-03-10 19:23:05] Gerando rodada 4 com 3 jogos
-[2025-03-10 19:23:05] Criando partida - Rodada: 4, Dupla 2 vs Dupla 3, Quadra: 47, Horário: 09:00
-[2025-03-10 19:23:05] Criando partida - Rodada: 4, Dupla 2 vs Dupla 4, Quadra: 48, Horário: 09:00
-[2025-03-10 19:23:05] Criando partida - Rodada: 4, Dupla 2 vs Dupla 5, Quadra: 47, Horário: 11:00
-[2025-03-10 19:23:05] Gerando rodada 5 com 3 jogos
-[2025-03-10 19:23:05] Criando partida - Rodada: 5, Dupla 3 vs Dupla 4, Quadra: 47, Horário: 09:00
-[2025-03-10 19:23:05] Criando partida - Rodada: 5, Dupla 3 vs Dupla 5, Quadra: 48, Horário: 09:00
-[2025-03-10 19:23:05] Criando partida - Rodada: 5, Dupla 4 vs Dupla 5, Quadra: 47, Horário: 11:00
-[2025-03-10 19:23:05] Torneio atualizado para status: in_progress
-[2025-03-10 19:23:05] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 19:23:05] [INFO] ID: 23
-[2025-03-10 19:23:05] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 19:23:05] [INFO] Status: in_progress
-[2025-03-10 19:23:05] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 19:23:05] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 19:23:14] [INFO] Atualizando placar da partida 325: 6 x 2
-[2025-03-10 19:23:14] [INFO] Time 1 venceu com 6 pontos
-[2025-03-10 19:23:14] [INFO] Partida 325 atualizada: winner_team=team1, status=completed
-[2025-03-10 19:23:14] [INFO] Pontuação dos jogadores atualizada
-[2025-03-10 19:23:14] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 19:23:14] [INFO] ID: 23
-[2025-03-10 19:23:14] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 19:23:14] [INFO] Status: in_progress
-[2025-03-10 19:23:14] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 19:23:14] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 19:24:06] [INFO] Atualizando placar da partida 329: 2 x 6
-[2025-03-10 19:24:06] [INFO] Time 2 venceu com 6 pontos
-[2025-03-10 19:24:06] [INFO] Partida 329 atualizada: winner_team=team2, status=completed
-[2025-03-10 19:24:06] [INFO] Pontuação dos jogadores atualizada
-[2025-03-10 19:24:06] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 19:24:06] [INFO] ID: 23
-[2025-03-10 19:24:06] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 19:24:06] [INFO] Status: in_progress
-[2025-03-10 19:24:06] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 19:24:06] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 19:28:14] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 19:28:14] [INFO] ID: 24
-[2025-03-10 19:28:14] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 19:28:14] [INFO] Status: draft
-[2025-03-10 19:28:14] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 19:28:14] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 19:28:24] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 19:28:24] [INFO] ID: 24
-[2025-03-10 19:28:24] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 19:28:24] [INFO] Status: open
-[2025-03-10 19:28:24] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 19:28:24] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 19:28:27] Iniciando geração de partidas Super 12 Duplas Fixas
-[2025-03-10 19:28:27] Duplas fixas formadas: [[6,2],[9,3],[4,12],[7,5],[11,1],[10,8]]
-[2025-03-10 19:28:27] Gerando rodada 1 com 3 jogos
-[2025-03-10 19:28:27] Criando partida - Rodada: 1, Dupla 0 vs Dupla 1, Quadra: 49, Horário: 09:00
-[2025-03-10 19:28:27] Criando partida - Rodada: 1, Dupla 0 vs Dupla 2, Quadra: 50, Horário: 09:00
-[2025-03-10 19:28:27] Criando partida - Rodada: 1, Dupla 0 vs Dupla 3, Quadra: 49, Horário: 11:00
-[2025-03-10 19:28:27] Gerando rodada 2 com 3 jogos
-[2025-03-10 19:28:27] Criando partida - Rodada: 2, Dupla 0 vs Dupla 4, Quadra: 49, Horário: 09:00
-[2025-03-10 19:28:27] Criando partida - Rodada: 2, Dupla 0 vs Dupla 5, Quadra: 50, Horário: 09:00
-[2025-03-10 19:28:27] Criando partida - Rodada: 2, Dupla 1 vs Dupla 2, Quadra: 49, Horário: 11:00
-[2025-03-10 19:28:27] Gerando rodada 3 com 3 jogos
-[2025-03-10 19:28:27] Criando partida - Rodada: 3, Dupla 1 vs Dupla 3, Quadra: 49, Horário: 09:00
-[2025-03-10 19:28:27] Criando partida - Rodada: 3, Dupla 1 vs Dupla 4, Quadra: 50, Horário: 09:00
-[2025-03-10 19:28:27] Criando partida - Rodada: 3, Dupla 1 vs Dupla 5, Quadra: 49, Horário: 11:00
-[2025-03-10 19:28:27] Gerando rodada 4 com 3 jogos
-[2025-03-10 19:28:27] Criando partida - Rodada: 4, Dupla 2 vs Dupla 3, Quadra: 49, Horário: 09:00
-[2025-03-10 19:28:27] Criando partida - Rodada: 4, Dupla 2 vs Dupla 4, Quadra: 50, Horário: 09:00
-[2025-03-10 19:28:27] Criando partida - Rodada: 4, Dupla 2 vs Dupla 5, Quadra: 49, Horário: 11:00
-[2025-03-10 19:28:27] Gerando rodada 5 com 3 jogos
-[2025-03-10 19:28:27] Criando partida - Rodada: 5, Dupla 3 vs Dupla 4, Quadra: 49, Horário: 09:00
-[2025-03-10 19:28:27] Criando partida - Rodada: 5, Dupla 3 vs Dupla 5, Quadra: 50, Horário: 09:00
-[2025-03-10 19:28:27] Criando partida - Rodada: 5, Dupla 4 vs Dupla 5, Quadra: 49, Horário: 11:00
-[2025-03-10 19:28:27] Torneio atualizado para status: in_progress
-[2025-03-10 19:28:27] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 19:28:27] [INFO] ID: 24
-[2025-03-10 19:28:27] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 19:28:27] [INFO] Status: in_progress
-[2025-03-10 19:28:27] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 19:28:27] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 19:28:34] [INFO] Atualizando placar da partida 340: 6 x 2
-[2025-03-10 19:28:34] [INFO] Time 1 venceu com 6 pontos
-[2025-03-10 19:28:34] [INFO] Partida 340 atualizada: winner_team=team1, status=completed
-[2025-03-10 19:28:34] [INFO] Pontuação dos jogadores atualizada
-[2025-03-10 19:28:35] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 19:28:35] [INFO] ID: 24
-[2025-03-10 19:28:35] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 19:28:35] [INFO] Status: in_progress
-[2025-03-10 19:28:35] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 19:28:35] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 19:29:00] [INFO] Atualizando placar da partida 342: 4 x 6
-[2025-03-10 19:29:00] [INFO] Time 2 venceu com 6 pontos
-[2025-03-10 19:29:00] [INFO] Partida 342 atualizada: winner_team=team2, status=completed
-[2025-03-10 19:29:00] [INFO] Pontuação dos jogadores atualizada
-[2025-03-10 19:29:01] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 19:29:01] [INFO] ID: 24
-[2025-03-10 19:29:01] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 19:29:01] [INFO] Status: in_progress
-[2025-03-10 19:29:01] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 19:29:01] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 19:31:32] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 19:31:32] [INFO] ID: 24
-[2025-03-10 19:31:32] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 19:31:32] [INFO] Status: in_progress
-[2025-03-10 19:31:32] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 19:31:32] [INFO] Partida 340: Pontos adicionados para dupla 2_6 - agora tem 2 pontos
-[2025-03-10 19:31:32] [INFO] Partida 342: Pontos adicionados para dupla 5_7 - agora tem 2 pontos
-[2025-03-10 19:31:32] [INFO] Ranking calculado: {"5_7":{"dupla":"gab & igor","pontos":2,"vit\u00f3rias":1,"derrotas":0,"posi\u00e7\u00e3o":1},"2_6":{"dupla":"guilherme & Pedro","pontos":2,"vit\u00f3rias":1,"derrotas":1,"posi\u00e7\u00e3o":2},"4_12":{"dupla":"Samuel & matheus","pontos":0,"vit\u00f3rias":0,"derrotas":0,"posi\u00e7\u00e3o":3},"3_9":{"dupla":"allan & Leo","pontos":0,"vit\u00f3rias":0,"derrotas":1,"posi\u00e7\u00e3o":4}}
-[2025-03-10 19:31:32] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 19:34:41] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 19:34:41] [INFO] ID: 20
-[2025-03-10 19:34:41] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 19:34:41] [INFO] Status: in_progress
-[2025-03-10 19:34:41] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 19:34:41] [INFO] Partida 280: Pontos adicionados para dupla 5_11 - agora tem 2 pontos
-[2025-03-10 19:34:41] [INFO] Partida 281: Pontos adicionados para dupla 7_10 - agora tem 2 pontos
-[2025-03-10 19:34:41] [INFO] Partida 282: Pontos adicionados para dupla 5_11 - agora tem 4 pontos
-[2025-03-10 19:34:41] [INFO] Ranking calculado: {"5_11":{"dupla":"Bruno & igor","pontos":4,"vit\u00f3rias":2,"derrotas":1,"posi\u00e7\u00e3o":1},"7_10":{"dupla":"gab & erick","pontos":2,"vit\u00f3rias":1,"derrotas":0,"posi\u00e7\u00e3o":2},"6_9":{"dupla":"guilherme & allan","pontos":0,"vit\u00f3rias":0,"derrotas":1,"posi\u00e7\u00e3o":3},"1_8":{"dupla":"Tiago Bauer Pereira & Gab m","pontos":0,"vit\u00f3rias":0,"derrotas":1,"posi\u00e7\u00e3o":4}}
-[2025-03-10 19:34:41] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 20:31:41] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 20:31:41] [INFO] ID: 25
-[2025-03-10 20:31:41] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 20:31:41] [INFO] Status: draft
-[2025-03-10 20:31:41] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 20:31:41] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 20:31:58] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 20:31:58] [INFO] ID: 25
-[2025-03-10 20:31:58] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 20:31:58] [INFO] Status: open
-[2025-03-10 20:31:58] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 20:31:58] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 20:32:04] Iniciando geração de partidas Super 12 Duplas Fixas
-[2025-03-10 20:32:04] Duplas fixas formadas: [[4,8],[1,6],[7,12],[9,5],[3,2],[10,11]]
-[2025-03-10 20:32:04] Gerando rodada 1 com 3 jogos
-[2025-03-10 20:32:04] Criando partida - Rodada: 1, Dupla 0 vs Dupla 1, Quadra: 51, Horário: 09:00
-[2025-03-10 20:32:04] Criando partida - Rodada: 1, Dupla 0 vs Dupla 2, Quadra: 52, Horário: 09:00
-[2025-03-10 20:32:04] Criando partida - Rodada: 1, Dupla 0 vs Dupla 3, Quadra: 51, Horário: 11:00
-[2025-03-10 20:32:04] Gerando rodada 2 com 3 jogos
-[2025-03-10 20:32:04] Criando partida - Rodada: 2, Dupla 0 vs Dupla 4, Quadra: 51, Horário: 09:00
-[2025-03-10 20:32:04] Criando partida - Rodada: 2, Dupla 0 vs Dupla 5, Quadra: 52, Horário: 09:00
-[2025-03-10 20:32:04] Criando partida - Rodada: 2, Dupla 1 vs Dupla 2, Quadra: 51, Horário: 11:00
-[2025-03-10 20:32:04] Gerando rodada 3 com 3 jogos
-[2025-03-10 20:32:04] Criando partida - Rodada: 3, Dupla 1 vs Dupla 3, Quadra: 51, Horário: 09:00
-[2025-03-10 20:32:04] Criando partida - Rodada: 3, Dupla 1 vs Dupla 4, Quadra: 52, Horário: 09:00
-[2025-03-10 20:32:04] Criando partida - Rodada: 3, Dupla 1 vs Dupla 5, Quadra: 51, Horário: 11:00
-[2025-03-10 20:32:04] Gerando rodada 4 com 3 jogos
-[2025-03-10 20:32:04] Criando partida - Rodada: 4, Dupla 2 vs Dupla 3, Quadra: 51, Horário: 09:00
-[2025-03-10 20:32:04] Criando partida - Rodada: 4, Dupla 2 vs Dupla 4, Quadra: 52, Horário: 09:00
-[2025-03-10 20:32:04] Criando partida - Rodada: 4, Dupla 2 vs Dupla 5, Quadra: 51, Horário: 11:00
-[2025-03-10 20:32:04] Gerando rodada 5 com 3 jogos
-[2025-03-10 20:32:04] Criando partida - Rodada: 5, Dupla 3 vs Dupla 4, Quadra: 51, Horário: 09:00
-[2025-03-10 20:32:04] Criando partida - Rodada: 5, Dupla 3 vs Dupla 5, Quadra: 52, Horário: 09:00
-[2025-03-10 20:32:04] Criando partida - Rodada: 5, Dupla 4 vs Dupla 5, Quadra: 51, Horário: 11:00
-[2025-03-10 20:32:04] Torneio atualizado para status: in_progress
-[2025-03-10 20:32:05] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 20:32:05] [INFO] ID: 25
-[2025-03-10 20:32:05] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 20:32:05] [INFO] Status: in_progress
-[2025-03-10 20:32:05] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 20:32:05] [INFO] Ranking calculado: {"4_8":{"dupla":"Samuel & Gab m","pontos":0,"vit\u00f3rias":0,"derrotas":0,"posi\u00e7\u00e3o":1},"1_6":{"dupla":"Tiago Bauer Pereira & guilherme","pontos":0,"vit\u00f3rias":0,"derrotas":0,"posi\u00e7\u00e3o":2},"7_12":{"dupla":"gab & matheus","pontos":0,"vit\u00f3rias":0,"derrotas":0,"posi\u00e7\u00e3o":3},"5_9":{"dupla":"allan & igor","pontos":0,"vit\u00f3rias":0,"derrotas":0,"posi\u00e7\u00e3o":4}}
-[2025-03-10 20:32:05] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 22:13:10] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 22:13:10] [INFO] ID: 26
-[2025-03-10 22:13:10] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 22:13:10] [INFO] Status: draft
-[2025-03-10 22:13:10] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 22:13:10] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 22:13:25] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 22:13:25] [INFO] ID: 26
-[2025-03-10 22:13:25] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 22:13:25] [INFO] Status: open
-[2025-03-10 22:13:25] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 22:13:25] [INFO] === Fim do carregamento do torneio ===
-[2025-03-10 22:13:30] Iniciando geração de partidas Super 12 Duplas Fixas
-[2025-03-10 22:13:30] Duplas fixas formadas: [[21,22],[18,17],[13,16],[24,15],[14,23],[19,20]]
-[2025-03-10 22:13:30] Gerando rodada 1 com 3 jogos
-[2025-03-10 22:13:30] Criando partida - Rodada: 1, Dupla 0 vs Dupla 1, Quadra: 53, Horário: 09:00
-[2025-03-10 22:13:30] Criando partida - Rodada: 1, Dupla 0 vs Dupla 2, Quadra: 54, Horário: 09:00
-[2025-03-10 22:13:30] Criando partida - Rodada: 1, Dupla 0 vs Dupla 3, Quadra: 53, Horário: 11:00
-[2025-03-10 22:13:30] Gerando rodada 2 com 3 jogos
-[2025-03-10 22:13:30] Criando partida - Rodada: 2, Dupla 0 vs Dupla 4, Quadra: 53, Horário: 09:00
-[2025-03-10 22:13:30] Criando partida - Rodada: 2, Dupla 0 vs Dupla 5, Quadra: 54, Horário: 09:00
-[2025-03-10 22:13:30] Criando partida - Rodada: 2, Dupla 1 vs Dupla 2, Quadra: 53, Horário: 11:00
-[2025-03-10 22:13:30] Gerando rodada 3 com 3 jogos
-[2025-03-10 22:13:30] Criando partida - Rodada: 3, Dupla 1 vs Dupla 3, Quadra: 53, Horário: 09:00
-[2025-03-10 22:13:30] Criando partida - Rodada: 3, Dupla 1 vs Dupla 4, Quadra: 54, Horário: 09:00
-[2025-03-10 22:13:30] Criando partida - Rodada: 3, Dupla 1 vs Dupla 5, Quadra: 53, Horário: 11:00
-[2025-03-10 22:13:30] Gerando rodada 4 com 3 jogos
-[2025-03-10 22:13:30] Criando partida - Rodada: 4, Dupla 2 vs Dupla 3, Quadra: 53, Horário: 09:00
-[2025-03-10 22:13:30] Criando partida - Rodada: 4, Dupla 2 vs Dupla 4, Quadra: 54, Horário: 09:00
-[2025-03-10 22:13:30] Criando partida - Rodada: 4, Dupla 2 vs Dupla 5, Quadra: 53, Horário: 11:00
-[2025-03-10 22:13:30] Gerando rodada 5 com 3 jogos
-[2025-03-10 22:13:30] Criando partida - Rodada: 5, Dupla 3 vs Dupla 4, Quadra: 53, Horário: 09:00
-[2025-03-10 22:13:30] Criando partida - Rodada: 5, Dupla 3 vs Dupla 5, Quadra: 54, Horário: 09:00
-[2025-03-10 22:13:30] Criando partida - Rodada: 5, Dupla 4 vs Dupla 5, Quadra: 53, Horário: 11:00
-[2025-03-10 22:13:30] Torneio atualizado para status: in_progress
-[2025-03-10 22:13:30] [INFO] === Início do carregamento do torneio ===
-[2025-03-10 22:13:30] [INFO] ID: 26
-[2025-03-10 22:13:30] [INFO] Tipo: super_12_fixed_pairs
-[2025-03-10 22:13:30] [INFO] Status: in_progress
-[2025-03-10 22:13:30] [INFO] Calculando ranking para Super 12 Duplas Fixas
-[2025-03-10 22:13:30] [INFO] Ranking calculado: {"21_22":{"dupla":"Gab m & thiago","pontos":0,"vit\u00f3rias":0,"derrotas":0,"posi\u00e7\u00e3o":1},"17_18":{"dupla":"guilherme & zili","pontos":0,"vit\u00f3rias":0,"derrotas":0,"posi\u00e7\u00e3o":2},"13_16":{"dupla":"Allan & cyro","pontos":0,"vit\u00f3rias":0,"derrotas":0,"posi\u00e7\u00e3o":3},"15_24":{"dupla":"Gab & leo@leo.com","pontos":0,"vit\u00f3rias":0,"derrotas":0,"posi\u00e7\u00e3o":4}}
-[2025-03-10 22:13:30] [INFO] === Fim do carregamento do torneio ===
-[2025-03-11 17:52:39] [INFO] === Início do carregamento do torneio ===
-[2025-03-11 17:52:39] [INFO] ID: 27
-[2025-03-11 17:52:39] [INFO] Tipo: super_8_individual
-[2025-03-11 17:52:39] [INFO] Status: draft
-[2025-03-11 17:52:39] [INFO] === Fim do carregamento do torneio ===
-[2025-03-11 17:52:51] [INFO] === Início do carregamento do torneio ===
-[2025-03-11 17:52:51] [INFO] ID: 27
-[2025-03-11 17:52:51] [INFO] Tipo: super_8_individual
-[2025-03-11 17:52:51] [INFO] Status: draft
-[2025-03-11 17:52:51] [INFO] === Fim do carregamento do torneio ===
-[2025-03-11 17:52:56] [INFO] === Início do carregamento do torneio ===
-[2025-03-11 17:52:56] [INFO] ID: 27
-[2025-03-11 17:52:56] [INFO] Tipo: super_8_individual
-[2025-03-11 17:52:56] [INFO] Status: draft
-[2025-03-11 17:52:56] [INFO] === Fim do carregamento do torneio ===
-[2025-03-11 17:53:21] [INFO] === Início do carregamento do torneio ===
-[2025-03-11 17:53:21] [INFO] ID: 27
-[2025-03-11 17:53:21] [INFO] Tipo: super_8_individual
-[2025-03-11 17:53:21] [INFO] Status: draft
-[2025-03-11 17:53:21] [INFO] === Fim do carregamento do torneio ===
-[2025-03-11 17:54:14] [INFO] === Início do carregamento do torneio ===
-[2025-03-11 17:54:14] [INFO] ID: 27
-[2025-03-11 17:54:14] [INFO] Tipo: super_8_individual
-[2025-03-11 17:54:14] [INFO] Status: draft
-[2025-03-11 17:54:14] [INFO] === Fim do carregamento do torneio ===
-[2025-03-11 17:54:17] [INFO] === Início do carregamento do torneio ===
-[2025-03-11 17:54:17] [INFO] ID: 27
-[2025-03-11 17:54:17] [INFO] Tipo: super_8_individual
-[2025-03-11 17:54:17] [INFO] Status: draft
-[2025-03-11 17:54:17] [INFO] === Fim do carregamento do torneio ===
-[2025-03-11 17:54:27] [INFO] === Início do carregamento do torneio ===
-[2025-03-11 17:54:27] [INFO] ID: 27
-[2025-03-11 17:54:27] [INFO] Tipo: super_8_individual
-[2025-03-11 17:54:27] [INFO] Status: draft
-[2025-03-11 17:54:27] [INFO] === Fim do carregamento do torneio ===
-[2025-03-11 17:54:46] [INFO] === Início do carregamento do torneio ===
-[2025-03-11 17:54:46] [INFO] ID: 27
-[2025-03-11 17:54:46] [INFO] Tipo: super_8_individual
-[2025-03-11 17:54:46] [INFO] Status: draft
-[2025-03-11 17:54:46] [INFO] === Fim do carregamento do torneio ===
-[2025-03-11 17:54:53] [INFO] === Início do carregamento do torneio ===
-[2025-03-11 17:54:53] [INFO] ID: 27
-[2025-03-11 17:54:53] [INFO] Tipo: super_8_individual
-[2025-03-11 17:54:53] [INFO] Status: draft
-[2025-03-11 17:54:53] [INFO] === Fim do carregamento do torneio ===
-[2025-03-11 17:55:09] [INFO] === Início do carregamento do torneio ===
-[2025-03-11 17:55:09] [INFO] ID: 28
-[2025-03-11 17:55:09] [INFO] Tipo: super_8_individual
-[2025-03-11 17:55:09] [INFO] Status: draft
-[2025-03-11 17:55:09] [INFO] === Fim do carregamento do torneio ===
-[2025-03-11 17:56:46] [INFO] === Início do carregamento do torneio ===
-[2025-03-11 17:56:46] [INFO] ID: 28
-[2025-03-11 17:56:46] [INFO] Tipo: super_8_individual
-[2025-03-11 17:56:46] [INFO] Status: draft
-[2025-03-11 17:56:46] [INFO] === Fim do carregamento do torneio ===
-[2025-03-11 17:56:52] [INFO] === Início do carregamento do torneio ===
-[2025-03-11 17:56:52] [INFO] ID: 28
-[2025-03-11 17:56:52] [INFO] Tipo: super_8_individual
-[2025-03-11 17:56:52] [INFO] Status: draft
-[2025-03-11 17:56:52] [INFO] === Fim do carregamento do torneio ===
-[2025-03-11 17:57:17] [INFO] === Início do carregamento do torneio ===
-[2025-03-11 17:57:17] [INFO] ID: 28
-[2025-03-11 17:57:17] [INFO] Tipo: super_8_individual
-[2025-03-11 17:57:17] [INFO] Status: draft
-[2025-03-11 17:57:17] [INFO] === Fim do carregamento do torneio ===
-[2025-03-11 17:58:01] [INFO] === Início do carregamento do torneio ===
-[2025-03-11 17:58:01] [INFO] ID: 28
-[2025-03-11 17:58:01] [INFO] Tipo: super_8_individual
-[2025-03-11 17:58:01] [INFO] Status: draft
-[2025-03-11 17:58:01] [INFO] === Fim do carregamento do torneio ===
-[2025-03-11 18:00:07] [INFO] === Início do carregamento do torneio ===
-[2025-03-11 18:00:07] [INFO] ID: 28
-[2025-03-11 18:00:07] [INFO] Tipo: super_8_individual
-[2025-03-11 18:00:07] [INFO] Status: draft
-[2025-03-11 18:00:07] [INFO] === Fim do carregamento do torneio ===
-[2025-03-11 18:00:48] [INFO] === Início do carregamento do torneio ===
-[2025-03-11 18:00:48] [INFO] ID: 28
-[2025-03-11 18:00:48] [INFO] Tipo: super_8_individual
-[2025-03-11 18:00:48] [INFO] Status: draft
-[2025-03-11 18:00:48] [INFO] === Fim do carregamento do torneio ===
-[2025-03-11 23:25:19] [INFO] === Início do carregamento do torneio ===
-[2025-03-11 23:25:19] [INFO] ID: 28
-[2025-03-11 23:25:19] [INFO] Tipo: super_8_individual
-[2025-03-11 23:25:19] [INFO] Status: draft
-[2025-03-11 23:25:19] [INFO] === Fim do carregamento do torneio ===
+[12-Mar-2025 19:38:37 UTC] [INFO] Iniciando geração de partidas para torneio 31 - fgd do tipo super_12_selected_pairs
+[12-Mar-2025 19:38:38 UTC] [INFO] === Início do carregamento do torneio ===
+[12-Mar-2025 19:38:38 UTC] [INFO] ID: 31
+[12-Mar-2025 19:38:38 UTC] [INFO] Tipo: super_12_selected_pairs
+[12-Mar-2025 19:38:38 UTC] [INFO] Status: open
+[12-Mar-2025 19:38:38 UTC] [INFO] === Fim do carregamento do torneio ===
+[12-Mar-2025 19:42:10 UTC] [INFO] === Início do carregamento do torneio ===
+[12-Mar-2025 19:42:10 UTC] [INFO] ID: 31
+[12-Mar-2025 19:42:10 UTC] [INFO] Tipo: super_12_selected_pairs
+[12-Mar-2025 19:42:10 UTC] [INFO] Status: open
+[12-Mar-2025 19:42:10 UTC] [INFO] === Fim do carregamento do torneio ===
+[12-Mar-2025 19:42:18 UTC] [INFO] Iniciando geração de partidas para torneio 31 - fgd do tipo super_12_selected_pairs
+[12-Mar-2025 19:42:18 UTC] [DEBUG] Informações da requisição: {"_token":"xjcYUBtnVnZraNrcF4LMuxZmpufaJWnRpxgthEpM"}
+[12-Mar-2025 19:42:18 UTC] [DEBUG] Verificando duplas para Super 12 Pré-selecionadas
+[12-Mar-2025 19:42:18 UTC] [DEBUG] Número de duplas encontradas: 0
+[12-Mar-2025 19:42:18 UTC] [DEBUG] Número insuficiente de duplas. Retornando erro.
+[12-Mar-2025 19:42:19 UTC] [INFO] === Início do carregamento do torneio ===
+[12-Mar-2025 19:42:19 UTC] [INFO] ID: 31
+[12-Mar-2025 19:42:19 UTC] [INFO] Tipo: super_12_selected_pairs
+[12-Mar-2025 19:42:19 UTC] [INFO] Status: open
+[12-Mar-2025 19:42:19 UTC] [INFO] === Fim do carregamento do torneio ===
+[12-Mar-2025 19:42:22 UTC] [INFO] === Início do carregamento do torneio ===
+[12-Mar-2025 19:42:22 UTC] [INFO] ID: 31
+[12-Mar-2025 19:42:22 UTC] [INFO] Tipo: super_12_selected_pairs
+[12-Mar-2025 19:42:22 UTC] [INFO] Status: open
+[12-Mar-2025 19:42:22 UTC] [INFO] === Fim do carregamento do torneio ===
+[12-Mar-2025 19:44:38 UTC] [INFO] === Início do carregamento do torneio ===
+[12-Mar-2025 19:44:38 UTC] [INFO] ID: 31
+[12-Mar-2025 19:44:38 UTC] [INFO] Tipo: super_12_selected_pairs
+[12-Mar-2025 19:44:38 UTC] [INFO] Status: open
+[12-Mar-2025 19:44:38 UTC] [INFO] === Fim do carregamento do torneio ===
+[12-Mar-2025 19:44:40 UTC] [INFO] Iniciando geração de partidas para torneio 31 - fgd do tipo super_12_selected_pairs
+[12-Mar-2025 19:44:41 UTC] [INFO] === Início do carregamento do torneio ===
+[12-Mar-2025 19:44:41 UTC] [INFO] ID: 31
+[12-Mar-2025 19:44:41 UTC] [INFO] Tipo: super_12_selected_pairs
+[12-Mar-2025 19:44:41 UTC] [INFO] Status: open
+[12-Mar-2025 19:44:41 UTC] [INFO] === Fim do carregamento do torneio ===
+[12-Mar-2025 19:44:45 UTC] [INFO] === Início do carregamento do torneio ===
+[12-Mar-2025 19:44:45 UTC] [INFO] ID: 31
+[12-Mar-2025 19:44:45 UTC] [INFO] Tipo: super_12_selected_pairs
+[12-Mar-2025 19:44:45 UTC] [INFO] Status: open
+[12-Mar-2025 19:44:45 UTC] [INFO] === Fim do carregamento do torneio ===
+[12-Mar-2025 19:44:48 UTC] [INFO] Iniciando geração de partidas para torneio 31 - fgd do tipo super_12_selected_pairs
+[12-Mar-2025 19:44:48 UTC] [INFO] === Início do carregamento do torneio ===
+[12-Mar-2025 19:44:48 UTC] [INFO] ID: 31
+[12-Mar-2025 19:44:48 UTC] [INFO] Tipo: super_12_selected_pairs
+[12-Mar-2025 19:44:48 UTC] [INFO] Status: open
+[12-Mar-2025 19:44:48 UTC] [INFO] === Fim do carregamento do torneio ===
+[12-Mar-2025 19:45:13 UTC] [INFO] === Início do carregamento do torneio ===
+[12-Mar-2025 19:45:13 UTC] [INFO] ID: 33
+[12-Mar-2025 19:45:13 UTC] [INFO] Tipo: super_12_selected_pairs
+[12-Mar-2025 19:45:13 UTC] [INFO] Status: draft
+[12-Mar-2025 19:45:13 UTC] [INFO] === Fim do carregamento do torneio ===
+[12-Mar-2025 19:45:29 UTC] [INFO] === Início do carregamento do torneio ===
+[12-Mar-2025 19:45:29 UTC] [INFO] ID: 33
+[12-Mar-2025 19:45:29 UTC] [INFO] Tipo: super_12_selected_pairs
+[12-Mar-2025 19:45:29 UTC] [INFO] Status: open
+[12-Mar-2025 19:45:29 UTC] [INFO] === Fim do carregamento do torneio ===
+[12-Mar-2025 19:45:34 UTC] [INFO] === Início do carregamento do torneio ===
+[12-Mar-2025 19:45:34 UTC] [INFO] ID: 33
+[12-Mar-2025 19:45:34 UTC] [INFO] Tipo: super_12_selected_pairs
+[12-Mar-2025 19:45:34 UTC] [INFO] Status: open
+[12-Mar-2025 19:45:34 UTC] [INFO] === Fim do carregamento do torneio ===
+[12-Mar-2025 19:45:36 UTC] [INFO] Iniciando geração de partidas para torneio 33 - sadasd do tipo super_12_selected_pairs
+[12-Mar-2025 19:45:36 UTC] [INFO] === Início do carregamento do torneio ===
+[12-Mar-2025 19:45:36 UTC] [INFO] ID: 33
+[12-Mar-2025 19:45:36 UTC] [INFO] Tipo: super_12_selected_pairs
+[12-Mar-2025 19:45:36 UTC] [INFO] Status: open
+[12-Mar-2025 19:45:36 UTC] [INFO] === Fim do carregamento do torneio ===
+[12-Mar-2025 19:48:00 UTC] [INFO] === Início do carregamento do torneio ===
+[12-Mar-2025 19:48:00 UTC] [INFO] ID: 33
+[12-Mar-2025 19:48:00 UTC] [INFO] Tipo: super_12_selected_pairs
+[12-Mar-2025 19:48:00 UTC] [INFO] Status: open
+[12-Mar-2025 19:48:00 UTC] [INFO] === Fim do carregamento do torneio ===
+[12-Mar-2025 19:48:04 UTC] [INFO] Iniciando geração de partidas para torneio 33 - sadasd do tipo super_12_selected_pairs
+[12-Mar-2025 19:48:05 UTC] [INFO] === Início do carregamento do torneio ===
+[12-Mar-2025 19:48:05 UTC] [INFO] ID: 33
+[12-Mar-2025 19:48:05 UTC] [INFO] Tipo: super_12_selected_pairs
+[12-Mar-2025 19:48:05 UTC] [INFO] Status: open
+[12-Mar-2025 19:48:05 UTC] [INFO] === Fim do carregamento do torneio ===
+[12-Mar-2025 19:48:20 UTC] [INFO] === Início do carregamento do torneio ===
+[12-Mar-2025 19:48:20 UTC] [INFO] ID: 34
+[12-Mar-2025 19:48:20 UTC] [INFO] Tipo: super_12_selected_pairs
+[12-Mar-2025 19:48:20 UTC] [INFO] Status: draft
+[12-Mar-2025 19:48:20 UTC] [INFO] === Fim do carregamento do torneio ===
+[12-Mar-2025 19:48:37 UTC] [INFO] === Início do carregamento do torneio ===
+[12-Mar-2025 19:48:37 UTC] [INFO] ID: 34
+[12-Mar-2025 19:48:37 UTC] [INFO] Tipo: super_12_selected_pairs
+[12-Mar-2025 19:48:37 UTC] [INFO] Status: open
+[12-Mar-2025 19:48:37 UTC] [INFO] === Fim do carregamento do torneio ===
+[12-Mar-2025 19:48:46 UTC] [INFO] === Início do carregamento do torneio ===
+[12-Mar-2025 19:48:46 UTC] [INFO] ID: 34
+[12-Mar-2025 19:48:46 UTC] [INFO] Tipo: super_12_selected_pairs
+[12-Mar-2025 19:48:46 UTC] [INFO] Status: open
+[12-Mar-2025 19:48:46 UTC] [INFO] === Fim do carregamento do torneio ===
+[12-Mar-2025 19:48:48 UTC] [INFO] Iniciando geração de partidas para torneio 34 - sadasd do tipo super_12_selected_pairs
+[12-Mar-2025 19:48:48 UTC] [INFO] === Início do carregamento do torneio ===
+[12-Mar-2025 19:48:48 UTC] [INFO] ID: 34
+[12-Mar-2025 19:48:48 UTC] [INFO] Tipo: super_12_selected_pairs
+[12-Mar-2025 19:48:48 UTC] [INFO] Status: open
+[12-Mar-2025 19:48:48 UTC] [INFO] === Fim do carregamento do torneio ===
+[12-Mar-2025 20:20:38 UTC] [INFO] === Início do carregamento do torneio ===
+[12-Mar-2025 20:20:38 UTC] [INFO] ID: 34
+[12-Mar-2025 20:20:38 UTC] [INFO] Tipo: super_12_selected_pairs
+[12-Mar-2025 20:20:38 UTC] [INFO] Status: open
+[12-Mar-2025 20:20:38 UTC] [INFO] === Fim do carregamento do torneio ===
+[12-Mar-2025 20:20:42 UTC] [INFO] Iniciando geração de partidas para torneio 34 - sadasd do tipo super_12_selected_pairs
+[12-Mar-2025 20:20:42 UTC] [INFO] === Início do carregamento do torneio ===
+[12-Mar-2025 20:20:42 UTC] [INFO] ID: 34
+[12-Mar-2025 20:20:42 UTC] [INFO] Tipo: super_12_selected_pairs
+[12-Mar-2025 20:20:42 UTC] [INFO] Status: open
+[12-Mar-2025 20:20:42 UTC] [INFO] === Fim do carregamento do torneio ===
+[12-Mar-2025 20:20:47 UTC] [INFO] === Início do carregamento do torneio ===
+[12-Mar-2025 20:20:47 UTC] [INFO] ID: 34
+[12-Mar-2025 20:20:47 UTC] [INFO] Tipo: super_12_selected_pairs
+[12-Mar-2025 20:20:47 UTC] [INFO] Status: open
+[12-Mar-2025 20:20:47 UTC] [INFO] === Fim do carregamento do torneio ===
+[12-Mar-2025 20:22:05 UTC] [INFO] === Início do carregamento do torneio ===
+[12-Mar-2025 20:22:05 UTC] [INFO] ID: 35
+[12-Mar-2025 20:22:05 UTC] [INFO] Tipo: super_12_selected_pairs
+[12-Mar-2025 20:22:05 UTC] [INFO] Status: draft
+[12-Mar-2025 20:22:05 UTC] [INFO] === Fim do carregamento do torneio ===
+[12-Mar-2025 20:22:27 UTC] [INFO] === Início do carregamento do torneio ===
+[12-Mar-2025 20:22:27 UTC] [INFO] ID: 35
+[12-Mar-2025 20:22:27 UTC] [INFO] Tipo: super_12_selected_pairs
+[12-Mar-2025 20:22:27 UTC] [INFO] Status: open
+[12-Mar-2025 20:22:27 UTC] [INFO] === Fim do carregamento do torneio ===
+[12-Mar-2025 20:29:03 UTC] [INFO] === Início do carregamento do torneio ===
+[12-Mar-2025 20:29:03 UTC] [INFO] ID: 35
+[12-Mar-2025 20:29:03 UTC] [INFO] Tipo: super_12_selected_pairs
+[12-Mar-2025 20:29:03 UTC] [INFO] Status: open
+[12-Mar-2025 20:29:03 UTC] [INFO] === Fim do carregamento do torneio ===
+[12-Mar-2025 20:29:09 UTC] [INFO] Iniciando geração de partidas para torneio 35 - asd do tipo super_12_selected_pairs
+[12-Mar-2025 20:29:09 UTC] [INFO] === Início do carregamento do torneio ===
+[12-Mar-2025 20:29:09 UTC] [INFO] ID: 35
+[12-Mar-2025 20:29:09 UTC] [INFO] Tipo: super_12_selected_pairs
+[12-Mar-2025 20:29:09 UTC] [INFO] Status: open
+[12-Mar-2025 20:29:09 UTC] [INFO] === Fim do carregamento do torneio ===
+[12-Mar-2025 20:30:00 UTC] [INFO] === Início do carregamento do torneio ===
+[12-Mar-2025 20:30:00 UTC] [INFO] ID: 35
+[12-Mar-2025 20:30:00 UTC] [INFO] Tipo: super_12_selected_pairs
+[12-Mar-2025 20:30:00 UTC] [INFO] Status: open
+[12-Mar-2025 20:30:00 UTC] [INFO] === Fim do carregamento do torneio ===
+[12-Mar-2025 20:30:04 UTC] [INFO] Iniciando geração de partidas para torneio 35 - asd do tipo super_12_selected_pairs
+[12-Mar-2025 20:30:04 UTC] [INFO] === Início do carregamento do torneio ===
+[12-Mar-2025 20:30:04 UTC] [INFO] ID: 35
+[12-Mar-2025 20:30:04 UTC] [INFO] Tipo: super_12_selected_pairs
+[12-Mar-2025 20:30:04 UTC] [INFO] Status: in_progress
+[12-Mar-2025 20:30:04 UTC] [INFO] === Fim do carregamento do torneio ===
+[12-Mar-2025 22:31:27 UTC] [INFO] === Início do carregamento do torneio ===
+[12-Mar-2025 22:31:27 UTC] [INFO] ID: 35
+[12-Mar-2025 22:31:27 UTC] [INFO] Tipo: super_12_selected_pairs
+[12-Mar-2025 22:31:27 UTC] [INFO] Status: in_progress
+[12-Mar-2025 22:31:27 UTC] [INFO] === Fim do carregamento do torneio ===
+[12-Mar-2025 22:32:02 UTC] [INFO] === Início do carregamento do torneio ===
+[12-Mar-2025 22:32:02 UTC] [INFO] ID: 32
+[12-Mar-2025 22:32:02 UTC] [INFO] Tipo: super_8_individual
+[12-Mar-2025 22:32:02 UTC] [INFO] Status: in_progress
+[12-Mar-2025 22:32:02 UTC] [INFO] === Fim do carregamento do torneio ===
+[12-Mar-2025 22:32:42 UTC] [INFO] === Início do carregamento do torneio ===
+[12-Mar-2025 22:32:42 UTC] [INFO] ID: 32
+[12-Mar-2025 22:32:42 UTC] [INFO] Tipo: super_8_individual
+[12-Mar-2025 22:32:42 UTC] [INFO] Status: in_progress
+[12-Mar-2025 22:32:42 UTC] [INFO] === Fim do carregamento do torneio ===
+[13-Mar-2025 01:10:27 UTC] [INFO] === Início do carregamento do torneio ===
+[13-Mar-2025 01:10:27 UTC] [INFO] ID: 35
+[13-Mar-2025 01:10:27 UTC] [INFO] Tipo: super_12_selected_pairs
+[13-Mar-2025 01:10:27 UTC] [INFO] Status: in_progress
+[13-Mar-2025 01:10:27 UTC] [INFO] === Fim do carregamento do torneio ===
+[13-Mar-2025 01:10:46 UTC] [INFO] === Início do carregamento do torneio ===
+[13-Mar-2025 01:10:46 UTC] [INFO] ID: 36
+[13-Mar-2025 01:10:46 UTC] [INFO] Tipo: super_12_selected_pairs
+[13-Mar-2025 01:10:46 UTC] [INFO] Status: draft
+[13-Mar-2025 01:10:46 UTC] [INFO] === Fim do carregamento do torneio ===
+[13-Mar-2025 01:12:45 UTC] [INFO] === Início do carregamento do torneio ===
+[13-Mar-2025 01:12:45 UTC] [INFO] ID: 36
+[13-Mar-2025 01:12:45 UTC] [INFO] Tipo: super_12_selected_pairs
+[13-Mar-2025 01:12:45 UTC] [INFO] Status: draft
+[13-Mar-2025 01:12:45 UTC] [INFO] === Fim do carregamento do torneio ===
+[13-Mar-2025 01:13:12 UTC] [INFO] === Início do carregamento do torneio ===
+[13-Mar-2025 01:13:12 UTC] [INFO] ID: 36
+[13-Mar-2025 01:13:12 UTC] [INFO] Tipo: super_12_selected_pairs
+[13-Mar-2025 01:13:12 UTC] [INFO] Status: draft
+[13-Mar-2025 01:13:12 UTC] [INFO] === Fim do carregamento do torneio ===
+[13-Mar-2025 01:13:18 UTC] [INFO] === Início do carregamento do torneio ===
+[13-Mar-2025 01:13:18 UTC] [INFO] ID: 36
+[13-Mar-2025 01:13:18 UTC] [INFO] Tipo: super_12_selected_pairs
+[13-Mar-2025 01:13:18 UTC] [INFO] Status: draft
+[13-Mar-2025 01:13:18 UTC] [INFO] === Fim do carregamento do torneio ===
