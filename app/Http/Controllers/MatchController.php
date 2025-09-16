@@ -85,7 +85,7 @@ class MatchController extends Controller
         ]);
 
         // Atualiza as pontuações dos jogadores
-        if ($tournament && $tournament->type === 'super_8_individual') {
+        if ($tournament && ($tournament->type === 'super_8_doubles' || $tournament->type === 'super_8_fixed_pairs')) {
             // Atualiza pontuação para time vencedor
             if ($winner === 'team1') {
                 $this->updatePlayerScore($match->team1_player1, $tournament, true);

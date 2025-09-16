@@ -3,7 +3,8 @@
         <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
             <h2 class="text-2xl font-bold mb-4 text-center">{{ $tournament->name }}</h2>
             <p class="text-gray-600 mb-4 text-center">
-                {{ $tournament->type === 'super_8_individual' ? 'Super 8 Individual' : 'Super 12 Duplas Fixas' }}
+                {{ $tournament->type === 'super_8_doubles' ? 'Super 8 Duplas' : 
+                   ($tournament->type === 'super_8_fixed_pairs' ? 'Super 8 Duplas Fixas' : 'Super 12 Duplas Fixas') }}
             </p>
 
             <form id="registrationForm" class="space-y-4">

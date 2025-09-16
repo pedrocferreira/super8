@@ -15,7 +15,11 @@ class TournamentPlayersSeeder extends Seeder
 
         foreach ($tournaments as $tournament) {
             // Seleciona aleatoriamente 8 ou 12 jogadores dependendo do tipo do torneio
-            $numberOfPlayers = $tournament->type === 'super_8_individual' ? 8 : 12;
+            $numberOfPlayers = match($tournament->type) {
+                'super_8_doubles' => 8,
+                'super_8_fixed_pairs' => 16,
+                default => 12
+            };
             $selectedPlayers = $allPlayers->random($numberOfPlayers);
 
             // Vincula os jogadores ao torneio

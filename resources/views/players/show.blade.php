@@ -92,7 +92,8 @@
                                                     </a>
                                                     <div class="text-gray-500">{{ $score->tournament->location }}</div>
                                                     <div class="text-xs text-gray-400">
-                                                        {{ $score->tournament->type === 'super_8_individual' ? 'Super 8' : 'Super 12' }}
+                                                        {{ $score->tournament->type === 'super_8_doubles' ? 'Super 8' : 
+                                                           ($score->tournament->type === 'super_8_fixed_pairs' ? 'Super 8 Fixas' : 'Super 12') }}
                                                     </div>
                                                 </div>
                                             </td>

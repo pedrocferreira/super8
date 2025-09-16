@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('location');
-            $table->enum('type', ['super_8_individual', 'super_12_fixed_pairs']);
+            $table->enum('type', ['super_8_doubles', 'super_8_fixed_pairs', 'super_12_fixed_pairs', 'super_12_selected_pairs']);
             $table->enum('status', ['draft', 'open', 'in_progress', 'completed'])->default('draft');
             $table->datetime('start_date');
             $table->datetime('end_date');

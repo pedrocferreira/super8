@@ -54,6 +54,8 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
         ->name('tournaments.generate-matches');
     Route::post('/tournaments/{tournament}/select-players', [TournamentController::class, 'selectPlayers'])
         ->name('tournaments.select-players');
+    Route::post('/tournaments/{tournament}/select-pairs', [TournamentController::class, 'selectPairs'])
+        ->name('tournaments.select-pairs');
 
     // Rotas de Jogadores
     Route::resource('players', PlayerController::class);

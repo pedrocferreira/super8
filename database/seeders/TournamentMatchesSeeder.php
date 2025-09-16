@@ -24,7 +24,11 @@ class TournamentMatchesSeeder extends Seeder
     {
         $players = $tournament->players;
         $courts = $tournament->courts;
-        $numberOfRounds = $tournament->type === 'super_8_individual' ? 7 : 11;
+        $numberOfRounds = match($tournament->type) {
+            'super_8_doubles' => 7,
+            'super_8_fixed_pairs' => 7,
+            default => 11
+        };
 
         for ($roundNumber = 1; $roundNumber <= $numberOfRounds; $roundNumber++) {
             $round = Round::create([
@@ -35,9 +39,33 @@ class TournamentMatchesSeeder extends Seeder
             // Embaralha os jogadores para criar partidas aleatórias
             $shuffledPlayers = $players->shuffle();
 
-            if ($tournament->type === 'super_8_individual') {
+            if ($tournament->type === 'super_8_doubles') {
                 // Cria 2 partidas por rodada (4 jogadores por partida)
                 for ($i = 0; $i < 8; $i += 4) {
+                    $match = GameMatch::create([
+                        'round_id' => $round->id,
+                        'court_id' => $courts->random()->id,
+                        'team1_player1_id' => $shuffledPlayers[$i]->id,
+                        'team1_player2_id' => $shuffledPlayers[$i + 1]->id,
+                        'team2_player1_id' => $shuffledPlayers[$i + 2]->id,
+                        'team2_player2_id' => $shuffledPlayers[$i + 3]->id,
+                        'status' => 'completed',
+                        'scheduled_time' => Carbon::now()->addHours($roundNumber)
+                    ]);
+
+                    // Gera um placar aleatório
+                    $team1Score = rand(4, 6);
+                    $team2Score = $team1Score === 6 ? rand(0, 4) : 6;
+                    $winner = $team1Score > $team2Score ? 'team1' : 'team2';
+
+                    $match->update([
+                        'score_details' => $team1Score . ' - ' . $team2Score,
+                        'winner_team' => $winner
+                    ]);
+                }
+            } elseif ($tournament->type === 'super_8_fixed_pairs') {
+                // Cria 4 partidas por rodada (8 duplas = 16 jogadores)
+                for ($i = 0; $i < 16; $i += 4) {
                     $match = GameMatch::create([
                         'round_id' => $round->id,
                         'court_id' => $courts->random()->id,

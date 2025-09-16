@@ -41,7 +41,8 @@
                                         <td class="px-6 py-4 whitespace-nowrap">{{ $tournament->location }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap">{{ $tournament->created_at->format('d/m/Y H:i') }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            {{ $tournament->type === 'super_8_individual' ? 'Super 8' : 'Super 12' }}
+                                            {{ $tournament->type === 'super_8_doubles' ? 'Super 8' : 
+                                               ($tournament->type === 'super_8_fixed_pairs' ? 'Super 8 Fixas' : 'Super 12') }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full

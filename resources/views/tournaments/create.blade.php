@@ -51,8 +51,11 @@
                                     name="type"
                                     required>
                                 <option value="">Selecione o tipo...</option>
-                                <option value="super_8_individual" {{ old('type') == 'super_8_individual' ? 'selected' : '' }}>
-                                    Super 8 Individual
+                                <option value="super_8_doubles" {{ old('type') == 'super_8_doubles' ? 'selected' : '' }}>
+                                    Super 8 Duplas (8 jogadores, parceiros rotativos)
+                                </option>
+                                <option value="super_8_fixed_pairs" {{ old('type') == 'super_8_fixed_pairs' ? 'selected' : '' }}>
+                                    Super 8 Duplas Fixas (16 jogadores, 8 duplas fixas)
                                 </option>
                                 <option value="super_12_fixed_pairs" {{ old('type') == 'super_12_fixed_pairs' ? 'selected' : '' }}>
                                     Super 12 Duplas Sorteadas
