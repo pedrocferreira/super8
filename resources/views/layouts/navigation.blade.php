@@ -5,10 +5,12 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <svg class="w-8 h-8 text-yellow-400" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12,2C6.48,2 2,6.48 2,12C2,17.52 6.48,22 12,22C17.52,22 22,17.52 22,12C22,6.48 17.52,2 12,2M12,4C16.42,4 20,7.58 20,12C20,16.42 16.42,20 12,20C7.58,20 4,16.42 4,12C4,7.58 7.58,4 12,4M12,6C8.69,6 6,8.69 6,12C6,15.31 8.69,18 12,18C15.31,18 18,15.31 18,12C18,8.69 15.31,6 12,6M12,8C14.21,8 16,9.79 16,12C16,14.21 14.21,16 12,16C9.79,16 8,14.21 8,12C8,9.79 9.79,8 12,8Z"/>
-                        </svg>
+                    <a href="{{ route('dashboard') }}" class="flex items-center gap-2">
+                        <img src="{{ asset('images/logoSemSub.png') }}" 
+                             alt="Sky Arena" 
+                             class="h-8 w-auto object-contain"
+                             style="height: 40px; width: 50px;">
+                        <span class="font-bold text-gray-900 text-lg hidden sm:block">Sky Arena</span>
                     </a>
                 </div>
 
@@ -20,11 +22,17 @@
                     <x-nav-link :href="route('tournaments.index')" :active="request()->routeIs('tournaments.*')">
                         {{ __('Torneios') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('seasons.index')" :active="request()->routeIs('seasons.*')">
+                        {{ __('Temporadas') }}
+                    </x-nav-link>
                     <x-nav-link :href="route('players.index')" :active="request()->routeIs('players.*')">
                         {{ __('Jogadores') }}
                     </x-nav-link>
                     <x-nav-link :href="route('player-stats.search')" :active="request()->routeIs('player-stats.*')">
                         {{ __('Estatísticas de Jogadores') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('rankings.statistics')" :active="request()->routeIs('rankings.*')">
+                        {{ __('Ranking') }}
                     </x-nav-link>
                 </div>
             </div>
@@ -79,13 +87,41 @@
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v2H8V5z"></path>
+                </svg>
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('tournaments.index')" :active="request()->routeIs('tournaments.*')">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
+                </svg>
                 {{ __('Torneios') }}
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('seasons.index')" :active="request()->routeIs('seasons.*')">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+                {{ __('Temporadas') }}
+            </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('players.index')" :active="request()->routeIs('players.*')">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                </svg>
                 {{ __('Jogadores') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('player-stats.search')" :active="request()->routeIs('player-stats.*')">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                </svg>
+                {{ __('Estatísticas') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('rankings.statistics')" :active="request()->routeIs('rankings.*')">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
+                </svg>
+                {{ __('Ranking') }}
             </x-responsive-nav-link>
         </div>
 

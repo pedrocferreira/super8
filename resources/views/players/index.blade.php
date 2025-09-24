@@ -1,18 +1,39 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Jogadores') }}
-            </h2>
-            @auth
-                <a href="{{ route('players.create') }}"
-                   class="inline-flex items-center px-4 py-2 bg-emerald-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-emerald-700 focus:bg-emerald-700 active:bg-emerald-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                    </svg>
-                    Novo Jogador
-                </a>
-            @endauth
+        <div class="space-y-4">
+            <!-- Mobile Header -->
+            <div class="md:hidden">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="font-semibold text-lg text-gray-800 leading-tight">
+                        {{ __('Jogadores') }}
+                    </h2>
+                    @auth
+                        <a href="{{ route('players.create') }}"
+                           class="inline-flex items-center px-3 py-2 bg-emerald-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-emerald-700">
+                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                            </svg>
+                            Novo
+                        </a>
+                    @endauth
+                </div>
+            </div>
+
+            <!-- Desktop Header -->
+            <div class="hidden md:flex justify-between items-center">
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                    {{ __('Jogadores') }}
+                </h2>
+                @auth
+                    <a href="{{ route('players.create') }}"
+                       class="inline-flex items-center px-4 py-2 bg-emerald-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-emerald-700 focus:bg-emerald-700 active:bg-emerald-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                        </svg>
+                        Novo Jogador
+                    </a>
+                @endauth
+            </div>
         </div>
     </x-slot>
 
@@ -20,27 +41,53 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <!-- Campo de Busca -->
+                    <!-- Filtros -->
                     <div class="mb-6">
-                        <form method="GET" action="{{ route('players.index') }}" class="flex gap-2">
-                            <input type="text"
-                                   name="search"
-                                   value="{{ $search ?? '' }}"
-                                   placeholder="Buscar por nome ou email..."
-                                   class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                            <button type="submit"
-                                    class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
-                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                                </svg>
-                                Buscar
-                            </button>
-                            @if($search)
-                                <a href="{{ route('players.index') }}"
-                                   class="inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700">
-                                    Limpar
-                                </a>
-                            @endif
+                        <form method="GET" action="{{ route('players.index') }}" class="space-y-4">
+                            <div class="flex flex-col sm:flex-row gap-4">
+                                <!-- Campo de Busca -->
+                                <div class="flex-1">
+                                    <input type="text"
+                                           name="search"
+                                           value="{{ $search ?? '' }}"
+                                           placeholder="Buscar por nome ou email..."
+                                           class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-base sm:text-sm">
+                                </div>
+                                
+                                <!-- Filtro por Temporada -->
+                                <div class="sm:w-64">
+                                    <select name="season_id" 
+                                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-base sm:text-sm">
+                                        <option value="">Todas as temporadas</option>
+                                        @foreach($seasons as $season)
+                                            <option value="{{ $season->id }}" 
+                                                    {{ ($seasonId ?? '') == $season->id ? 'selected' : '' }}>
+                                                {{ $season->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                
+                                <!-- Botões -->
+                                <div class="flex gap-2">
+                                    <button type="submit"
+                                            class="flex-1 sm:flex-none inline-flex items-center justify-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700">
+                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                        </svg>
+                                        Filtrar
+                                    </button>
+                                    @if($search || $seasonId)
+                                        <a href="{{ route('players.index') }}"
+                                           class="flex-1 sm:flex-none inline-flex items-center justify-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                            </svg>
+                                            Limpar
+                                        </a>
+                                    @endif
+                                </div>
+                            </div>
                         </form>
                     </div>
 

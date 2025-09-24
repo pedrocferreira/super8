@@ -17,10 +17,84 @@ class TournamentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $tournaments = Tournament::latest()->paginate(10);
-        return view('tournaments.index', compact('tournaments'));
+        $query = Tournament::with(['season', 'players', 'rounds']);
+        
+        // Filtros
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('location', 'like', "%{$search}%");
+            });
+        }
+        
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+        
+        if ($request->filled('type')) {
+            $query->where('type', $request->type);
+        }
+        
+        if ($request->filled('category')) {
+            $query->where('category', $request->category);
+        }
+        
+        if ($request->filled('season_id')) {
+            $query->where('season_id', $request->season_id);
+        }
+        
+        // Ordenação
+        $sortBy = $request->get('sort_by', 'created_at');
+        $sortDirection = $request->get('sort_direction', 'desc');
+        
+        if (in_array($sortBy, ['name', 'location', 'created_at', 'status'])) {
+            $query->orderBy($sortBy, $sortDirection);
+        } else {
+            $query->latest();
+        }
+        
+        $tournaments = $query->paginate(10)->withQueryString();
+        
+        // Dados para filtros
+        $seasons = \App\Models\Season::orderBy('name')->get();
+        $statusOptions = [
+            'draft' => 'Rascunho',
+            'open' => 'Aberto',
+            'in_progress' => 'Em Andamento',
+            'completed' => 'Finalizado'
+        ];
+        $typeOptions = [
+            'super_8_doubles' => 'Super 8',
+            'super_8_fixed_pairs' => 'Super 8 Fixas',
+            'super_12_fixed_pairs' => 'Super 12 Fixas',
+            'super_12_selected_pairs' => 'Super 12 Selecionadas'
+        ];
+        $categoryOptions = [
+            'male' => 'Masculino',
+            'female' => 'Feminino',
+            'mixed' => 'Mista'
+        ];
+        
+        // Estatísticas
+        $stats = [
+            'total' => Tournament::count(),
+            'draft' => Tournament::where('status', 'draft')->count(),
+            'open' => Tournament::where('status', 'open')->count(),
+            'in_progress' => Tournament::where('status', 'in_progress')->count(),
+            'completed' => Tournament::where('status', 'completed')->count(),
+        ];
+        
+        return view('tournaments.index', compact(
+            'tournaments', 
+            'seasons', 
+            'statusOptions', 
+            'typeOptions', 
+            'categoryOptions',
+            'stats'
+        ));
     }
 
     /**
@@ -28,7 +102,8 @@ class TournamentController extends Controller
      */
     public function create()
     {
-        return view('tournaments.create');
+        $seasons = \App\Models\Season::orderBy('status', 'desc')->orderBy('end_date', 'desc')->get();
+        return view('tournaments.create', compact('seasons'));
     }
 
     /**
@@ -40,6 +115,8 @@ class TournamentController extends Controller
             'name' => 'required|string|max:255',
             'location' => 'required|string|max:255',
             'type' => 'required|in:super_8_doubles,super_8_fixed_pairs,super_12_fixed_pairs,super_12_selected_pairs',
+            'category' => 'required|in:male,female,mixed',
+            'season_id' => 'nullable|exists:seasons,id',
             'number_of_courts' => 'required|integer|min:1|max:10',
         ]);
 
@@ -268,9 +345,16 @@ class TournamentController extends Controller
                 $player = Player::select('id', 'name', 'email')->findOrFail($request->player_id);
             }
 
-            $availablePlayers = Player::select('id', 'name', 'email')
-                ->orderBy('name')
-            ->get();
+            $availablePlayersQuery = Player::select('id', 'name', 'email', 'gender')
+                ->orderBy('name');
+
+            if ($tournament->category === 'male') {
+                $availablePlayersQuery->where('gender', 'male');
+            } elseif ($tournament->category === 'female') {
+                $availablePlayersQuery->where('gender', 'female');
+            }
+
+            $availablePlayers = $availablePlayersQuery->get();
 
             $selectedPlayers = $tournament->players()
                 ->pluck('players.id')
@@ -707,11 +791,33 @@ class TournamentController extends Controller
         $requiredPlayers = match($tournament->type) {
             'super_8_doubles' => 8,
             'super_8_fixed_pairs' => 16,
+            'super_12_fixed_pairs' => 12,
             default => 12
         };
 
         if ($playerCount !== $requiredPlayers) {
             return back()->with('error', "Este torneio requer exatamente {$requiredPlayers} jogadores.");
+        }
+
+        // Valida gênero conforme categoria
+        if ($tournament->category === 'male') {
+            $count = Player::whereIn('id', $validated['selected_players'])->where('gender', 'male')->count();
+            if ($count !== $requiredPlayers) {
+                return back()->with('error', 'Este torneio é masculino. Selecione apenas atletas masculinos.');
+            }
+        } elseif ($tournament->category === 'female') {
+            $count = Player::whereIn('id', $validated['selected_players'])->where('gender', 'female')->count();
+            if ($count !== $requiredPlayers) {
+                return back()->with('error', 'Este torneio é feminino. Selecione apenas atletas femininos.');
+            }
+        } elseif ($tournament->category === 'mixed' && $tournament->type === 'super_12_fixed_pairs') {
+            // Validação específica para Super 12 Duplas Fixas Mistas: exatamente 6 homens e 6 mulheres
+            $maleCount = Player::whereIn('id', $validated['selected_players'])->where('gender', 'male')->count();
+            $femaleCount = Player::whereIn('id', $validated['selected_players'])->where('gender', 'female')->count();
+            
+            if ($maleCount !== 6 || $femaleCount !== 6) {
+                return back()->with('error', 'Para torneios Super 12 Duplas Fixas Mistas, selecione exatamente 6 homens e 6 mulheres.');
+            }
         }
 
         // Limpa as seleções anteriores
@@ -752,6 +858,24 @@ class TournamentController extends Controller
 
         if (count($allPlayers) !== 16) {
             return back()->with('error', 'É necessário selecionar exatamente 16 jogadores únicos.');
+        }
+
+        // Validar gêneros conforme categoria
+        if ($tournament->category === 'male' || $tournament->category === 'female' || $tournament->category === 'mixed') {
+            $playersMap = Player::whereIn('id', $allPlayers)->pluck('gender', 'id');
+            foreach ($validated['pairs'] as $idx => $pair) {
+                $g1 = $playersMap[$pair[0]] ?? null;
+                $g2 = $playersMap[$pair[1]] ?? null;
+                if ($tournament->category === 'male' && (in_array('female', [$g1, $g2]))) {
+                    return back()->with('error', "Dupla #" . ($idx+1) . ": torneio masculino aceita apenas homens.");
+                }
+                if ($tournament->category === 'female' && (in_array('male', [$g1, $g2]))) {
+                    return back()->with('error', "Dupla #" . ($idx+1) . ": torneio feminino aceita apenas mulheres.");
+                }
+                if ($tournament->category === 'mixed' && ($g1 === $g2)) {
+                    return back()->with('error', "Dupla #" . ($idx+1) . ": torneio misto exige 1 homem e 1 mulher.");
+                }
+            }
         }
 
         // Limpa as seleções anteriores
@@ -948,40 +1072,91 @@ class TournamentController extends Controller
 
                 return redirect()->route('tournaments.show', $tournament)
                     ->with('success', 'Duplas (Super 8) definidas com sucesso!');
-            } else {
-                // Validação anterior (ex.: Super 12 duplas selecionadas): 6 duplas nomeadas
+            } elseif ($tournament->type === 'super_12_fixed_pairs') {
+                // Validação para Super 12 Duplas Fixas: 6 duplas, pares indexados [i][0],[i][1]
                 $validated = $request->validate([
-                    'pairs' => 'required|array|size:6',
-                    'pairs.*' => 'required|array',
-                    'pairs.*.player1' => 'required|exists:players,id',
-                    'pairs.*.player2' => 'required|exists:players,id',
+                    'pairs' => ['required', 'array', 'size:6'],
+                    'pairs.*' => ['required', 'array', 'size:2'],
+                    'pairs.*.*' => ['required', 'exists:players,id']
                 ]);
 
-                // Verificar por jogadores duplicados
+                // Verificar unicidade (12 jogadores únicos)
                 $allPlayers = [];
                 foreach ($validated['pairs'] as $pair) {
-                    $allPlayers[] = (int) $pair['player1'];
-                    $allPlayers[] = (int) $pair['player2'];
+                    foreach ($pair as $playerId) {
+                        $allPlayers[] = (int) $playerId;
+                    }
                 }
-                if (count($allPlayers) !== count(array_unique($allPlayers))) {
-                    return back()->with('error', 'Um jogador não pode estar em mais de uma dupla.');
+                if (count($allPlayers) !== 12 || count(array_unique($allPlayers)) !== 12) {
+                    return back()->with('error', 'É necessário selecionar 12 jogadores únicos para formar 6 duplas.');
+                }
+
+                // Validação específica para torneios mistos: 6 homens e 6 mulheres
+                if ($tournament->category === 'mixed') {
+                    $maleCount = Player::whereIn('id', $allPlayers)->where('gender', 'male')->count();
+                    $femaleCount = Player::whereIn('id', $allPlayers)->where('gender', 'female')->count();
+                    
+                    if ($maleCount !== 6 || $femaleCount !== 6) {
+                        return back()->with('error', 'Para torneios Super 12 Duplas Fixas Mistas, selecione exatamente 6 homens e 6 mulheres.');
+                    }
                 }
 
                 DB::beginTransaction();
 
+                // Persistir pares (sobrescreve anteriores)
                 Pair::where('tournament_id', $tournament->id)->delete();
                 foreach ($validated['pairs'] as $pair) {
                     Pair::create([
                         'tournament_id' => $tournament->id,
-                        'player1_id' => $pair['player1'],
-                        'player2_id' => $pair['player2'],
+                        'player1_id' => $pair[0],
+                        'player2_id' => $pair[1],
                     ]);
                 }
+
+                // Atualizar relação jogadores do torneio na ordem enviada
+                $tournament->players()->detach();
+                $tournament->players()->attach($allPlayers);
+
+                $tournament->update(['status' => 'open']);
 
                 DB::commit();
 
                 return redirect()->route('tournaments.show', $tournament)
-                    ->with('success', 'Duplas definidas com sucesso!');
+                    ->with('success', 'Duplas (Super 12) definidas com sucesso!');
+            } else {
+                // Validação anterior (ex.: Super 12 duplas selecionadas): 6 duplas nomeadas
+        $validated = $request->validate([
+            'pairs' => 'required|array|size:6',
+            'pairs.*' => 'required|array',
+            'pairs.*.player1' => 'required|exists:players,id',
+            'pairs.*.player2' => 'required|exists:players,id',
+        ]);
+
+            // Verificar por jogadores duplicados
+            $allPlayers = [];
+            foreach ($validated['pairs'] as $pair) {
+                    $allPlayers[] = (int) $pair['player1'];
+                    $allPlayers[] = (int) $pair['player2'];
+            }
+            if (count($allPlayers) !== count(array_unique($allPlayers))) {
+                return back()->with('error', 'Um jogador não pode estar em mais de uma dupla.');
+            }
+            
+            DB::beginTransaction();
+            
+            Pair::where('tournament_id', $tournament->id)->delete();
+            foreach ($validated['pairs'] as $pair) {
+                Pair::create([
+                    'tournament_id' => $tournament->id,
+                    'player1_id' => $pair['player1'],
+                    'player2_id' => $pair['player2'],
+                ]);
+            }
+            
+            DB::commit();
+            
+            return redirect()->route('tournaments.show', $tournament)
+                ->with('success', 'Duplas definidas com sucesso!');
             }
         } catch (\Exception $e) {
             if (DB::transactionLevel() > 0) DB::rollBack();

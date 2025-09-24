@@ -14,7 +14,7 @@ class UsersTableSeeder extends Seeder
             ['email' => 'admin@admin.com'],
             [
                 'name' => 'Admin',
-                'password' => Hash::make('admin'),
+                'password' => Hash::make('admin1234'),
                 'email_verified_at' => now()
             ]
         );

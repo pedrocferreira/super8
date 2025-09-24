@@ -30,9 +30,9 @@ class ResetAdminPassword extends Command
         $admin = User::where('email', 'admin@admin.com')->first();
 
         if ($admin) {
-            $admin->password = Hash::make('admin123');
+            $admin->password = Hash::make('admin1234');
             $admin->save();
-            $this->info('Admin password has been reset successfully. The new password is "password".');
+            $this->info('Admin password has been reset successfully. The new password is "admin1234".');
         } else {
             $this->error('Admin user not found.');
         }

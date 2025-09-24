@@ -6,7 +6,11 @@ use App\Http\Controllers\TournamentController;
 use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\MatchController;
 use App\Http\Controllers\TournamentRegistrationController;
+use App\Http\Controllers\RankingController;
+use App\Http\Controllers\PublicRankingController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SeasonController;
 use App\Models\Player;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -22,32 +26,16 @@ use Illuminate\Support\Facades\DB;
 |
 */
 
-Route::get('/', function () {
-    // Ranking geral
-    $playerRanking = Player::select(
-        'players.id',
-        'players.name',
-        'players.email',
-        DB::raw('SUM(player_scores.points) as total_points'),
-        DB::raw('SUM(player_scores.games_won) as total_wins'),
-        DB::raw('SUM(player_scores.games_lost) as total_losses'),
-        DB::raw('COUNT(DISTINCT player_scores.tournament_id) as tournaments_played')
-    )
-    ->leftJoin('player_scores', 'players.id', '=', 'player_scores.player_id')
-    ->groupBy('players.id', 'players.name', 'players.email')
-    ->orderBy('total_points', 'desc')
-    ->orderBy('total_wins', 'desc')
-    ->orderBy('total_losses', 'asc')
-    ->get();
-
-    return view('welcome', compact('playerRanking'));
-})->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::middleware(['web', 'auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Rotas de Torneios
     Route::resource('tournaments', TournamentController::class);
+
+    // Rotas de Temporadas
+    Route::resource('seasons', SeasonController::class)->except(['show']);
     
     // Adiciona o middleware log.errors apenas nesta rota
     Route::post('/tournaments/{tournament}/generate-matches', [TournamentController::class, 'generateMatches'])
@@ -111,6 +99,28 @@ Route::get('/tournament-register/{code}', [TournamentRegistrationController::cla
     ->name('tournament.register');
 Route::post('/tournament-register/{code}', [TournamentRegistrationController::class, 'register'])
     ->name('tournament.register.submit');
+
+// Rotas do sistema de ranking e balanceamento (requer login)
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/rankings/season/{seasonId}', [RankingController::class, 'season'])
+        ->name('rankings.season');
+    Route::get('/rankings/player/{playerId}/season/{seasonId}/balance', [RankingController::class, 'playerBalance'])
+        ->name('rankings.player.balance');
+    Route::post('/rankings/season/{seasonId}/apply-balance', [RankingController::class, 'applyBalance'])
+        ->name('rankings.apply.balance');
+    Route::get('/rankings/statistics', [RankingController::class, 'statistics'])
+        ->name('rankings.statistics');
+});
+
+// Rotas públicas do sistema de ranking (não requer login)
+Route::get('/public/rankings', [PublicRankingController::class, 'index'])
+    ->name('public.rankings.index');
+Route::get('/public/rankings/season/{seasonId}', [PublicRankingController::class, 'season'])
+    ->name('public.rankings.season');
+Route::get('/public/rankings/player/{playerId}/season/{seasonId}/balance', [PublicRankingController::class, 'playerBalance'])
+    ->name('public.rankings.player.balance');
+Route::get('/public/rankings/statistics', [PublicRankingController::class, 'statistics'])
+    ->name('public.rankings.statistics');
 
 require __DIR__.'/auth.php';
 

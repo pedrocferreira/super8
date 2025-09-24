@@ -10,7 +10,7 @@ class Tournament extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'location', 'start_date', 'end_date', 'type',
+        'name', 'location', 'start_date', 'end_date', 'type', 'category', 'season_id',
         'min_players', 'max_players', 'scoring_criteria', 'status',
         'number_of_courts', 'registration_code', 'registration_open'
     ];
@@ -50,5 +50,10 @@ class Tournament extends Model
     {
         return $this->belongsToMany(Player::class, 'tournament_players')
                     ->withTimestamps();
+    }
+
+    public function season()
+    {
+        return $this->belongsTo(Season::class);
     }
 }

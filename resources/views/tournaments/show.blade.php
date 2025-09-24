@@ -1,39 +1,99 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ $tournament->name }}
-            </h2>
-            <div class="flex space-x-4">
-                <a href="{{ route('tournaments.index') }}"
-                   class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
-                    Voltar
-                </a>
-                @if($tournament->status === 'draft')
-                    <button type="button"
-                            onclick="openSelectPlayersModal()"
-                            class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700">
-                        Etapa 1: Selecionar Jogadores
-                    </button>
-                @elseif($tournament->status === 'open')
-                    @if($tournament->type === 'super_12_selected_pairs')
-                        <a href="{{ route('tournaments.select-pairs-form', $tournament) }}"
-                           class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700">
-                            Etapa 2: Definir Duplas
+        <div class="space-y-4">
+            <!-- Mobile Header -->
+            <div class="md:hidden">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="font-semibold text-lg text-gray-800 leading-tight truncate">
+                        {{ $tournament->name }}
+                    </h2>
+                    <a href="{{ route('tournaments.index') }}"
+                       class="inline-flex items-center px-3 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                        </svg>
+                        Voltar
+                    </a>
+                </div>
+                
+                <!-- Mobile Action Buttons -->
+                <div class="space-y-2">
+                    @if($tournament->status === 'draft')
+                        <button type="button"
+                                onclick="openSelectPlayersModal()"
+                                class="w-full inline-flex items-center justify-center px-4 py-3 bg-indigo-600 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-indigo-700">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                            </svg>
+                            Etapa 1: Selecionar Jogadores
+                        </button>
+                    @elseif($tournament->status === 'open')
+                        @if($tournament->type === 'super_12_selected_pairs')
+                            <a href="{{ route('tournaments.select-pairs-form', $tournament) }}"
+                               class="w-full inline-flex items-center justify-center px-4 py-3 bg-blue-600 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-blue-700">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                </svg>
+                                Etapa 2: Definir Duplas
+                            </a>
+                        @endif
+                        <button type="button"
+                                onclick="openGenerateMatchesModal()"
+                                class="w-full inline-flex items-center justify-center px-4 py-3 bg-emerald-600 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-emerald-700">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
+                            </svg>
+                            Etapa {{ $tournament->type === 'super_12_selected_pairs' ? '3' : '2' }}: Gerar Partidas
+                        </button>
+                    @endif
+                    @if($tournament->type === 'super_12_fixed_pairs' || $tournament->type === 'super_12_selected_pairs')
+                        <a href="{{ route('tournaments.show-pairs', $tournament) }}"
+                           class="w-full inline-flex items-center justify-center px-4 py-3 bg-purple-600 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-purple-700">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                            </svg>
+                            Ver Duplas
                         </a>
                     @endif
-                    <button type="button"
-                            onclick="openGenerateMatchesModal()"
-                            class="inline-flex items-center px-4 py-2 bg-emerald-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-emerald-700">
-                        Etapa {{ $tournament->type === 'super_12_selected_pairs' ? '3' : '2' }}: Gerar Partidas
-                    </button>
-                @endif
-                @if($tournament->type === 'super_12_fixed_pairs' || $tournament->type === 'super_12_selected_pairs')
-                    <a href="{{ route('tournaments.show-pairs', $tournament) }}"
-                       class="inline-flex items-center px-4 py-2 bg-purple-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-purple-700">
-                        Ver Duplas
+                </div>
+            </div>
+
+            <!-- Desktop Header -->
+            <div class="hidden md:flex justify-between items-center">
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                    {{ $tournament->name }}
+                </h2>
+                <div class="flex space-x-4">
+                    <a href="{{ route('tournaments.index') }}"
+                       class="inline-flex items-center px-4 py-2 bg-gray-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">
+                        Voltar
                     </a>
-                @endif
+                    @if($tournament->status === 'draft')
+                        <button type="button"
+                                onclick="openSelectPlayersModal()"
+                                class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700">
+                            Etapa 1: Selecionar Jogadores
+                        </button>
+                    @elseif($tournament->status === 'open')
+                        @if($tournament->type === 'super_12_selected_pairs')
+                            <a href="{{ route('tournaments.select-pairs-form', $tournament) }}"
+                               class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700">
+                                Etapa 2: Definir Duplas
+                            </a>
+                        @endif
+                        <button type="button"
+                                onclick="openGenerateMatchesModal()"
+                                class="inline-flex items-center px-4 py-2 bg-emerald-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-emerald-700">
+                            Etapa {{ $tournament->type === 'super_12_selected_pairs' ? '3' : '2' }}: Gerar Partidas
+                        </button>
+                    @endif
+                    @if($tournament->type === 'super_12_fixed_pairs' || $tournament->type === 'super_12_selected_pairs')
+                        <a href="{{ route('tournaments.show-pairs', $tournament) }}"
+                           class="inline-flex items-center px-4 py-2 bg-purple-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-purple-700">
+                            Ver Duplas
+                        </a>
+                    @endif
+                </div>
             </div>
         </div>
     </x-slot>
@@ -67,6 +127,12 @@
                             <dd class="mt-1 text-sm text-gray-900">
                                 {{ $tournament->type === 'super_8_doubles' ? 'Super 8 Duplas' : 
                                    ($tournament->type === 'super_8_fixed_pairs' ? 'Super 8 Duplas Fixas' : 'Super 12 Duplas Fixas') }}
+                            </dd>
+                        </div>
+                        <div>
+                            <dt class="text-sm font-medium text-gray-500">Categoria:</dt>
+                            <dd class="mt-1 text-sm text-gray-900">
+                                {{ $tournament->category === 'male' ? 'Masculino' : ($tournament->category === 'female' ? 'Feminino' : 'Mista') }}
                             </dd>
                         </div>
                         <div>
@@ -270,116 +336,7 @@
         </div>
     </div>
 
-    <!-- Modal de Seleção de Jogadores -->
-    <div id="selectPlayersModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden">
-        <div class="relative top-10 mx-auto p-6 border shadow-lg rounded-md bg-white {{ $tournament->type === 'super_8_fixed_pairs' ? 'w-4/5 max-w-4xl' : 'w-96' }}">
-            <div class="mt-3">
-                @if($tournament->type === 'super_8_fixed_pairs')
-                    <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4">Formar as 8 Duplas</h3>
-                    <form id="pairsForm" action="{{ route('tournaments.store-pairs', $tournament) }}" method="POST">
-                        @csrf
-                        <div class="mt-2">
-                            <p class="text-sm text-gray-500 mb-4">
-                                Selecione os jogadores e organize-os em 8 duplas. Arraste os jogadores para formar as duplas.
-                            </p>
-
-                            <!-- Barra de ferramentas -->
-                            <div class="mb-4 flex flex-col gap-3">
-                                <div class="flex items-center gap-3">
-                                    <div class="flex-1">
-                                        <input id="playerSearch" type="text" placeholder="Buscar jogador pelo nome..." class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" />
-                                    </div>
-                                    <button type="button" id="randomizePairsBtn" class="px-3 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700">Randomizar</button>
-                                    <button type="button" id="autoCompletePairsBtn" class="px-3 py-2 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700">Auto completar</button>
-                                    <button type="button" id="clearPairsBtn" class="px-3 py-2 text-sm font-medium text-white bg-gray-600 rounded-md hover:bg-gray-700">Limpar</button>
-                                </div>
-                                <div class="flex items-center justify-between">
-                                    <div class="text-sm text-gray-600">
-                                        <span id="selectedCount" class="font-medium">Selecionados: 0/16</span>
-                                        <span class="mx-2">•</span>
-                                        <span id="pairsCount" class="font-medium">Duplas completas: 0/8</span>
-                                    </div>
-                                    <label class="inline-flex items-center gap-2 text-sm text-gray-700 cursor-pointer select-none">
-                                        <input id="clickModeToggle" type="checkbox" class="h-4 w-4 text-indigo-600 border-gray-300 rounded" checked>
-                                        Modo clique para formar duplas
-                                    </label>
-                                </div>
-                            </div>
-                            
-                            <!-- Lista de jogadores disponíveis -->
-                            <div class="mb-6">
-                                <h4 class="text-md font-medium text-gray-700 mb-2">Jogadores Disponíveis</h4>
-                                <div id="available-players" class="min-h-20 p-3 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50">
-                                    @foreach($availablePlayers as $player)
-                                        <div class="player-item inline-block m-1 px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm cursor-move border border-blue-200 hover:bg-blue-200 transition-colors" 
-                                             data-player-id="{{ $player->id }}" 
-                                             draggable="true">
-                                            {{ $player->name }}
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </div>
-
-                            <!-- 8 Duplas -->
-                            <div class="grid grid-cols-2 gap-4">
-                                @for($i = 1; $i <= 8; $i++)
-                                    <div class="pair-container">
-                                        <h5 class="text-sm font-medium text-gray-600 mb-2">Dupla {{ $i }}</h5>
-                                        <div class="pair-dropzone min-h-16 p-3 border-2 border-dashed border-gray-300 rounded-lg bg-white hover:border-blue-400 transition-colors" 
-                                             data-pair="{{ $i }}">
-                                            <div class="pair-players flex flex-wrap gap-1">
-                                                <!-- Jogadores serão adicionados aqui via JavaScript -->
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endfor
-                            </div>
-
-                            <!-- Hidden inputs para enviar as duplas -->
-                            <div id="pairs-input-container">
-                                <!-- Inputs serão gerados via JavaScript -->
-                            </div>
-                        </div>
-                @else
-                    <h3 class="text-lg font-medium leading-6 text-gray-900 mb-4">Selecionar Jogadores</h3>
-                    <form action="{{ route('tournaments.select-players', $tournament) }}" method="POST">
-                        @csrf
-                        <div class="mt-2">
-                            <p class="text-sm text-gray-500 mb-4">
-                                Selecione {{ $tournament->type === 'super_8_doubles' ? '8' : '12' }} jogadores para o torneio.
-                            </p>
-                            <div class="max-h-60 overflow-y-auto">
-                            @foreach($availablePlayers as $player)
-                                    <div class="flex items-center mb-2">
-                                    <input type="checkbox"
-                                               id="player_{{ $player->id }}" 
-                                           name="selected_players[]"
-                                           value="{{ $player->id }}"
-                                           {{ in_array($player->id, $selectedPlayers) ? 'checked' : '' }}
-                                               class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
-                                        <label for="player_{{ $player->id }}" class="ml-2 block text-sm text-gray-900">
-                                            {{ $player->name }}
-                                        </label>
-                                    </div>
-                                @endforeach
-                                </div>
-                        </div>
-                @endif
-                    <div class="flex justify-end mt-4 space-x-3">
-                        <button type="button"
-                                onclick="document.getElementById('selectPlayersModal').classList.add('hidden')"
-                                class="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                            Cancelar
-                        </button>
-                        <button id="selectPlayersConfirmBtn" type="submit" form="{{ $tournament->type === 'super_8_fixed_pairs' ? 'pairsForm' : '' }}" {{ $tournament->type === 'super_8_fixed_pairs' ? 'disabled' : '' }}
-                                class="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                            Confirmar
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+    @include('tournaments._player_selection_modal')
 
     <!-- Modal de Gerar Partidas -->
     <div id="generateMatchesModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden">
@@ -467,10 +424,6 @@
     <!-- Scripts -->
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Função para abrir o modal de seleção de jogadores
-        window.openSelectPlayersModal = function() {
-            document.getElementById('selectPlayersModal').classList.remove('hidden');
-        }
 
         // Função para fechar o modal quando clicar fora dele
         document.getElementById('selectPlayersModal').addEventListener('click', function(e) {
@@ -479,21 +432,52 @@
             }
         });
 
-        // Limitar o número de jogadores que podem ser selecionados
+        // Sistema de seleção por checkbox melhorado
         const maxPlayers = {{ $tournament->type === 'super_8_doubles' ? 8 : 
                            ($tournament->type === 'super_8_fixed_pairs' ? 16 : 12) }};
-        const checkboxes = document.querySelectorAll('input[name="selected_players[]"]');
         
-        checkboxes.forEach(function(checkbox) {
+        // Busca de jogadores na lista
+        const searchInput = document.getElementById('playerListSearch');
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                document.querySelectorAll('.player-checkbox-item').forEach(item => {
+                    const playerName = item.dataset.playerName;
+                    item.style.display = playerName.includes(searchTerm) ? '' : 'none';
+                });
+            });
+        }
+        
+        // Atualizar contador de selecionados
+        function updateSelectedCount() {
+            const checkedBoxes = document.querySelectorAll('.player-checkbox:checked');
+            const countElement = document.getElementById('selectedPlayersCount');
+            if (countElement) {
+                countElement.textContent = checkedBoxes.length;
+            }
+            
+            // Atualizar estado do botão confirmar
+            const confirmBtn = document.getElementById('selectPlayersConfirmBtn');
+            if (confirmBtn && !confirmBtn.hasAttribute('form')) {
+                confirmBtn.disabled = checkedBoxes.length !== maxPlayers;
+            }
+        }
+        
+        // Limitar seleção e atualizar contador
+        document.querySelectorAll('.player-checkbox').forEach(function(checkbox) {
             checkbox.addEventListener('change', function() {
-                const checkedBoxes = document.querySelectorAll('input[name="selected_players[]"]:checked');
+                const checkedBoxes = document.querySelectorAll('.player-checkbox:checked');
                 
                 if (checkedBoxes.length > maxPlayers) {
                     this.checked = false;
                     alert(`Você só pode selecionar ${maxPlayers} jogadores.`);
                 }
+                updateSelectedCount();
             });
         });
+        
+        // Inicializar contador
+        updateSelectedCount();
 
         // Sistema de Drag & Drop para formação de duplas
         @if($tournament->type === 'super_8_fixed_pairs')
@@ -559,12 +543,27 @@
                 const playerId = e.dataTransfer.getData('text/plain');
                 const playerHtml = e.dataTransfer.getData('text/html');
                 const pairNumber = this.dataset.pair;
+                const category = '{{ $tournament->category }}';
                 
                 // Verificar se a dupla já está completa (2 jogadores)
                 const currentPlayers = this.querySelectorAll('.player-item');
                 if (currentPlayers.length >= 2) {
                     alert('Esta dupla já está completa! Máximo 2 jogadores por dupla.');
                     return;
+                }
+
+                // Validação mista: se categoria for mixed, precisa 1 homem + 1 mulher
+                if (category === 'mixed') {
+                    const dragEl = document.querySelector(`[data-player-id="${playerId}"]`);
+                    const dragGender = dragEl ? dragEl.getAttribute('data-gender') : null;
+                    const existing = Array.from(currentPlayers)[0];
+                    if (existing) {
+                        const existGender = existing.getAttribute('data-gender');
+                        if (existGender && dragGender && existGender === dragGender) {
+                            alert('Duplas mistas exigem 1 homem e 1 mulher.');
+                            return;
+                        }
+                    }
                 }
                 
                 // Remover o jogador da posição anterior
@@ -608,6 +607,7 @@
                     newPlayerItem.remove();
                     updatePairsInput();
                     updateCountersAndConfirmButton();
+                    updatePairHint(pairNumber);
                 };
                 newPlayerItem.appendChild(removeBtn);
                 
@@ -619,6 +619,7 @@
                 
                 updatePairsInput();
                 updateCountersAndConfirmButton();
+                updatePairHint(pairNumber);
             });
         });
 
@@ -733,10 +734,18 @@
                 existing.remove();
             }
             const el = document.createElement('div');
-            el.className = 'player-item inline-block m-1 px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm cursor-move border border-green-200 hover:bg-green-200 transition-colors';
+            const source = document.querySelector(`[data-player-id="${playerId}"]`);
+            const genderAttr = source ? source.getAttribute('data-gender') : '';
+            el.className = 'player-item inline-flex items-center gap-2 m-1 px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm cursor-move border border-green-200 hover:bg-green-200 transition-colors';
             el.setAttribute('data-player-id', playerId);
+            if (genderAttr) el.setAttribute('data-gender', genderAttr);
             el.setAttribute('draggable', 'true');
-            el.textContent = label;
+            const dot = document.createElement('span');
+            dot.className = 'inline-block w-2.5 h-2.5 rounded-full ' + (genderAttr === 'male' ? 'bg-blue-500' : 'bg-pink-500');
+            const nameSpan = document.createElement('span');
+            nameSpan.textContent = label;
+            el.appendChild(dot);
+            el.appendChild(nameSpan);
             const removeBtn = document.createElement('span');
             removeBtn.innerHTML = ' ×';
             removeBtn.classList.add('remove-player-btn', 'ml-1', 'cursor-pointer', 'font-bold', 'text-red-500', 'hover:text-red-700');
@@ -757,12 +766,14 @@
                 el.remove();
                 updatePairsInput();
                 updateCountersAndConfirmButton();
+                updatePairHint(dropzone.dataset.pair);
             };
             el.appendChild(removeBtn);
             dropzone.querySelector('.pair-players').appendChild(el);
             const pn = dropzone.dataset.pair;
             if (!pairs[pn]) pairs[pn] = [];
             pairs[pn].push(String(playerId));
+            updatePairHint(pn);
         }
 
         function firstAvailableDropzone() {
@@ -823,7 +834,31 @@
                 for (let i = 0; i < need; i++) {
                     const pid = available.shift();
                     if (!pid) break;
-                    assignPlayerIdToDropzone(pid, zone);
+                    // Em mista, tentar balancear 1 homem + 1 mulher
+                    const category = '{{ $tournament->category }}';
+                    if (category === 'mixed') {
+                        const existing = zone.querySelector('.player-item');
+                        if (existing) {
+                            const existGender = existing.getAttribute('data-gender');
+                            // procurar próximo de gênero diferente
+                            let idx = 0;
+                            while (idx < available.length) {
+                                const cand = document.querySelector(`[data-player-id="${available[idx]}"]`);
+                                const candGender = cand ? cand.getAttribute('data-gender') : null;
+                                if (candGender && candGender !== existGender) {
+                                    const chosen = available.splice(idx, 1)[0];
+                                    assignPlayerIdToDropzone(chosen, zone);
+                                    break;
+                                }
+                                idx++;
+                            }
+                            if (zone.querySelectorAll('.player-item').length < 2 && pid) assignPlayerIdToDropzone(pid, zone);
+                        } else {
+                            assignPlayerIdToDropzone(pid, zone);
+                        }
+                    } else {
+                        assignPlayerIdToDropzone(pid, zone);
+                    }
                 }
             }
             updatePairsInput();
@@ -846,8 +881,30 @@
             const zones = Array.from(document.querySelectorAll('.pair-dropzone'));
             let idx = 0;
             for (const zone of zones) {
-                assignPlayerIdToDropzone(all[idx++].id, zone);
-                assignPlayerIdToDropzone(all[idx++].id, zone);
+                const category = '{{ $tournament->category }}';
+                if (category === 'mixed') {
+                    // garantir 1M+1F por zona
+                    const nextA = all[idx++];
+                    const genderA = document.querySelector(`[data-player-id="${nextA.id}"]`)?.getAttribute('data-gender');
+                    // procurar oposto
+                    let k = idx;
+                    while (k < all.length) {
+                        const gk = document.querySelector(`[data-player-id="${all[k].id}"]`)?.getAttribute('data-gender');
+                        if (gk && genderA && gk !== genderA) {
+                            const [nextB] = all.splice(k, 1);
+                            assignPlayerIdToDropzone(nextA.id, zone);
+                            assignPlayerIdToDropzone(nextB.id, zone);
+                            break;
+                        }
+                        k++;
+                    }
+                    if (zone.querySelectorAll('.player-item').length < 2 && idx < all.length) {
+                        assignPlayerIdToDropzone(all[idx++].id, zone);
+                    }
+                } else {
+                    assignPlayerIdToDropzone(all[idx++].id, zone);
+                    assignPlayerIdToDropzone(all[idx++].id, zone);
+                }
             }
             updatePairsInput();
             updateCountersAndConfirmButton();
@@ -855,6 +912,29 @@
 
         // Inicializa contadores
         updateCountersAndConfirmButton();
+
+        function updatePairHint(pairNumber) {
+            const hint = document.querySelector(`[data-pair-hint="${pairNumber}"]`);
+            if (!hint) return;
+            const zone = document.querySelector(`.pair-dropzone[data-pair="${pairNumber}"]`);
+            const players = Array.from(zone.querySelectorAll('.player-item'));
+            if (players.length === 0) {
+                hint.textContent = '';
+                return;
+            }
+            if (players.length === 1) {
+                const g = players[0].getAttribute('data-gender');
+                hint.textContent = g === 'male' ? 'Aguardando mulher' : (g === 'female' ? 'Aguardando homem' : 'Aguardando parceiro');
+                return;
+            }
+            const g1 = players[0].getAttribute('data-gender');
+            const g2 = players[1].getAttribute('data-gender');
+            if (g1 && g2 && g1 !== g2) {
+                hint.textContent = 'Mista ✓';
+            } else {
+                hint.textContent = g1 === g2 ? 'Mesmo gênero' : '';
+            }
+        }
         @endif
 
         // Funções para o modal de gerar partidas
