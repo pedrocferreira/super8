@@ -242,20 +242,37 @@
 
                         <!-- Área de duplas -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-6">
-                            @for($i = 1; $i <= 6; $i++)
-                                <div class="border-2 border-dashed border-gray-300 rounded-lg p-3 sm:p-4 min-h-[100px] sm:min-h-[120px] pair-slot" data-pair="{{ $i }}">
-                                    <div class="text-center text-xs sm:text-sm text-gray-500 mb-2">Dupla {{ $i }}</div>
-                                    <div class="flex flex-col gap-2 min-h-[60px] sm:min-h-[80px] pair-players" data-pair="{{ $i }}">
-                                        <div class="pair-hint text-xs text-gray-400 text-center py-2">
-                                            @if($tournament->category === 'mixed')
-                                                Aguardando homem/mulher
-                                            @else
-                                                Aguardando jogadores
-                                            @endif
+                            @if($tournament->type === 'super_8_fixed_pairs')
+                                @for($i = 1; $i <= 8; $i++)
+                                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-3 sm:p-4 min-h-[100px] sm:min-h-[120px] pair-slot" data-pair="{{ $i }}">
+                                        <div class="text-center text-xs sm:text-sm text-gray-500 mb-2">Dupla {{ $i }}</div>
+                                        <div class="flex flex-col gap-2 min-h-[60px] sm:min-h-[80px] pair-players" data-pair="{{ $i }}">
+                                            <div class="pair-hint text-xs text-gray-400 text-center py-2">
+                                                @if($tournament->category === 'mixed')
+                                                    Aguardando homem/mulher
+                                                @else
+                                                    Aguardando jogadores
+                                                @endif
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            @endfor
+                                @endfor
+                            @else
+                                @for($i = 1; $i <= 6; $i++)
+                                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-3 sm:p-4 min-h-[100px] sm:min-h-[120px] pair-slot" data-pair="{{ $i }}">
+                                        <div class="text-center text-xs sm:text-sm text-gray-500 mb-2">Dupla {{ $i }}</div>
+                                        <div class="flex flex-col gap-2 min-h-[60px] sm:min-h-[80px] pair-players" data-pair="{{ $i }}">
+                                            <div class="pair-hint text-xs text-gray-400 text-center py-2">
+                                                @if($tournament->category === 'mixed')
+                                                    Aguardando homem/mulher
+                                                @else
+                                                    Aguardando jogadores
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endfor
+                            @endif
                         </div>
 
                         <!-- Lista de jogadores disponíveis -->
@@ -291,10 +308,17 @@
 
                         <!-- Inputs hidden para os pares -->
                         <div id="pairs-input-container">
-                            @for($i = 1; $i <= 6; $i++)
-                                <input type="hidden" name="pairs[{{ $i-1 }}][0]" class="pair-input-1" data-pair="{{ $i }}">
-                                <input type="hidden" name="pairs[{{ $i-1 }}][1]" class="pair-input-2" data-pair="{{ $i }}">
-                            @endfor
+                            @if($tournament->type === 'super_8_fixed_pairs')
+                                @for($i = 1; $i <= 8; $i++)
+                                    <input type="hidden" name="pairs[{{ $i-1 }}][0]" class="pair-input-1" data-pair="{{ $i }}">
+                                    <input type="hidden" name="pairs[{{ $i-1 }}][1]" class="pair-input-2" data-pair="{{ $i }}">
+                                @endfor
+                            @else
+                                @for($i = 1; $i <= 6; $i++)
+                                    <input type="hidden" name="pairs[{{ $i-1 }}][0]" class="pair-input-1" data-pair="{{ $i }}">
+                                    <input type="hidden" name="pairs[{{ $i-1 }}][1]" class="pair-input-2" data-pair="{{ $i }}">
+                                @endfor
+                            @endif
                         </div>
 
                         <!-- Botões de ação -->
@@ -441,22 +465,33 @@ document.addEventListener('DOMContentLoaded', function() {
         function updatePairHints() {
             Object.keys(pairs).forEach(pairNum => {
                 const pair = pairs[pairNum];
-                const hint = document.querySelector(`[data-pair-hint="${pairNum}"]`);
-                const emptyHint = document.querySelector(`[data-empty-hint="${pairNum}"]`);
+                const pairElement = document.querySelector(`[data-pair="${pairNum}"]`);
+                const hint = pairElement.querySelector('.pair-hint');
                 
                 if (pair.length === 0) {
                     hint.textContent = isMixed ? 'Aguardando homem/mulher' : 'Aguardando 2 jogadores';
-                    emptyHint.style.display = 'block';
                 } else if (pair.length === 1) {
-                    const player = pair[0];
-                    const needsOpposite = isMixed && player.gender === pair[0].gender;
+                    const player = document.querySelector(`[data-player-id="${pair[0]}"]`);
+                    const gender = player ? player.dataset.playerGender : 'unknown';
                     hint.textContent = isMixed ? 
-                        `Aguardando ${player.gender === 'male' ? 'mulher' : 'homem'}` : 
+                        (gender === 'male' ? 'Aguardando mulher' : 'Aguardando homem') : 
                         'Aguardando 1 jogador';
-                    emptyHint.style.display = 'none';
                 } else {
-                    hint.textContent = 'Dupla completa ✓';
-                    emptyHint.style.display = 'none';
+                    // Para torneios mistos, verificar se é uma dupla mista válida
+                    if (isMixed) {
+                        const player1 = document.querySelector(`[data-player-id="${pair[0]}"]`);
+                        const player2 = document.querySelector(`[data-player-id="${pair[1]}"]`);
+                        const gender1 = player1 ? player1.dataset.playerGender : 'unknown';
+                        const gender2 = player2 ? player2.dataset.playerGender : 'unknown';
+                        
+                        if (gender1 !== gender2) {
+                            hint.textContent = 'Dupla completa ✓';
+                        } else {
+                            hint.textContent = 'Mesmo gênero';
+                        }
+                    } else {
+                        hint.textContent = 'Dupla completa ✓';
+                    }
                 }
             });
         }
@@ -805,14 +840,15 @@ document.addEventListener('DOMContentLoaded', function() {
             // Verificar se já está em outra dupla
             if (selectedPlayers.includes(playerId)) return false;
             
-            // Validação para torneios mistos
+            // Validação para torneios mistos - só aplicar se for torneio misto
             if (isMixed && pairs[pairNum].length === 1) {
                 const existingPlayer = document.querySelector(`[data-player-id="${pairs[pairNum][0]}"]`);
                 const newPlayer = document.querySelector(`[data-player-id="${playerId}"]`);
                 
                 if (existingPlayer && newPlayer && 
                     existingPlayer.dataset.playerGender === newPlayer.dataset.playerGender) {
-                    return false; // Mesmo gênero
+                    alert('Em torneio misto, cada dupla deve ter 1 homem e 1 mulher!');
+                    return false; // Mesmo gênero em torneio misto
                 }
             }
             
@@ -881,14 +917,24 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Atualizar inputs hidden
         function updateHiddenInputs() {
+            console.log('Atualizando inputs hidden...');
             Object.keys(pairs).forEach(pairNum => {
                 const pair = pairs[pairNum];
-                const input1 = document.querySelector(`[data-pair="${pairNum}"].pair-input-1`);
-                const input2 = document.querySelector(`[data-pair="${pairNum}"].pair-input-2`);
+                const input1 = document.querySelector(`input[name="pairs[${pairNum-1}][0]"]`);
+                const input2 = document.querySelector(`input[name="pairs[${pairNum-1}][1]"]`);
+                
+                console.log(`Dupla ${pairNum}:`, pair, 'Input1:', input1, 'Input2:', input2);
                 
                 if (input1) input1.value = pair[0] || '';
                 if (input2) input2.value = pair[1] || '';
             });
+            
+            // Debug: verificar todos os inputs
+            const allInputs = document.querySelectorAll('input[name^="pairs["]');
+            console.log('Todos os inputs hidden:', Array.from(allInputs).map(input => ({
+                name: input.name,
+                value: input.value
+            })));
         }
         
         // Busca de jogadores
@@ -1052,5 +1098,36 @@ document.addEventListener('DOMContentLoaded', function() {
         // Ativar modo clique por padrão
         clickModeToggle.dispatchEvent(new Event('change'));
     @endif
+    
+    // Adicionar validação antes do envio do formulário
+    document.getElementById('pairsForm').addEventListener('submit', function(e) {
+        console.log('Formulário sendo enviado...');
+        
+        // Atualizar inputs hidden uma última vez
+        updateHiddenInputs();
+        
+        // Verificar se todas as duplas estão completas
+        const completedPairs = Object.values(pairs).filter(pair => pair.length === 2).length;
+        const expectedPairs = {{ $tournament->type === 'super_8_fixed_pairs' ? 8 : 6 }};
+        
+        if (completedPairs !== expectedPairs) {
+            e.preventDefault();
+            alert(`É necessário formar ${expectedPairs} duplas completas. Atualmente: ${completedPairs}`);
+            return false;
+        }
+        
+        // Verificar se todos os inputs estão preenchidos
+        const allInputs = document.querySelectorAll('input[name^="pairs["]');
+        const emptyInputs = Array.from(allInputs).filter(input => !input.value);
+        
+        if (emptyInputs.length > 0) {
+            e.preventDefault();
+            console.error('Inputs vazios encontrados:', emptyInputs);
+            alert('Erro: Alguns campos não foram preenchidos. Recarregue a página e tente novamente.');
+            return false;
+        }
+        
+        console.log('Formulário válido, enviando...');
+    });
 });
 </script>

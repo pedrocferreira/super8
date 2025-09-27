@@ -38,7 +38,7 @@
                             </a>
                         @endif
                         <button type="button"
-                                onclick="openGenerateMatchesModal()"
+                                id="generateMatchesBtn1"
                                 class="w-full inline-flex items-center justify-center px-4 py-3 bg-emerald-600 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-emerald-700">
                             <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
@@ -82,7 +82,7 @@
                             </a>
                         @endif
                         <button type="button"
-                                onclick="openGenerateMatchesModal()"
+                                id="generateMatchesBtn2"
                                 class="inline-flex items-center px-4 py-2 bg-emerald-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-emerald-700">
                             Etapa {{ $tournament->type === 'super_12_selected_pairs' ? '3' : '2' }}: Gerar Partidas
                         </button>
@@ -423,7 +423,56 @@
 
     <!-- Scripts -->
     <script>
+    // Definir funções globais imediatamente - versão ultra robusta
+    window.openGenerateMatchesModal = function() {
+        try {
+            console.log('Executando openGenerateMatchesModal...');
+            var modal = document.getElementById('generateMatchesModal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                console.log('Modal aberto com sucesso');
+            } else {
+                console.error('Modal não encontrado');
+                alert('Erro: Modal não encontrado. Recarregue a página.');
+            }
+        } catch (e) {
+            console.error('Erro ao abrir modal:', e);
+            alert('Erro ao abrir modal. Recarregue a página.');
+        }
+    };
+
+    window.closeGenerateMatchesModal = function() {
+        try {
+            var modal = document.getElementById('generateMatchesModal');
+            if (modal) {
+                modal.classList.add('hidden');
+            }
+        } catch (e) {
+            console.error('Erro ao fechar modal:', e);
+        }
+    };
+
+    // Verificar se as funções foram definidas
+    console.log('Funções definidas:', typeof window.openGenerateMatchesModal, typeof window.closeGenerateMatchesModal);
+
     document.addEventListener('DOMContentLoaded', function() {
+        // Adicionar event listeners para os botões de gerar partidas
+        const btn1 = document.getElementById('generateMatchesBtn1');
+        const btn2 = document.getElementById('generateMatchesBtn2');
+        
+        if (btn1) {
+            btn1.addEventListener('click', function() {
+                console.log('Botão 1 clicado');
+                window.openGenerateMatchesModal();
+            });
+        }
+        
+        if (btn2) {
+            btn2.addEventListener('click', function() {
+                console.log('Botão 2 clicado');
+                window.openGenerateMatchesModal();
+            });
+        }
 
         // Função para fechar o modal quando clicar fora dele
         document.getElementById('selectPlayersModal').addEventListener('click', function(e) {
@@ -437,9 +486,9 @@
                            ($tournament->type === 'super_8_fixed_pairs' ? 16 : 12) }};
         
         // Busca de jogadores na lista
-        const searchInput = document.getElementById('playerListSearch');
-        if (searchInput) {
-            searchInput.addEventListener('input', function() {
+        const playerListSearchInput = document.getElementById('playerListSearch');
+        if (playerListSearchInput) {
+            playerListSearchInput.addEventListener('input', function() {
                 const searchTerm = this.value.toLowerCase();
                 document.querySelectorAll('.player-checkbox-item').forEach(item => {
                     const playerName = item.dataset.playerName;
@@ -797,9 +846,9 @@
         }
 
         // Toolbar handlers
-        const searchInput = document.getElementById('playerSearch');
-        if (searchInput) {
-            searchInput.addEventListener('input', function() {
+        const playerSearchInput = document.getElementById('playerSearch');
+        if (playerSearchInput) {
+            playerSearchInput.addEventListener('input', function() {
                 const q = normalizeName(this.value);
                 document.querySelectorAll('#available-players .player-item').forEach(el => {
                     const name = normalizeName(el.textContent);
@@ -937,21 +986,6 @@
         }
         @endif
 
-        // Funções para o modal de gerar partidas
-        window.openGenerateMatchesModal = function() {
-            document.getElementById('generateMatchesModal').classList.remove('hidden');
-        }
-
-        window.closeGenerateMatchesModal = function() {
-            document.getElementById('generateMatchesModal').classList.add('hidden');
-        }
-
-        // Fechar modal quando clicar fora
-        document.getElementById('generateMatchesModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                this.classList.add('hidden');
-            }
-        });
 
         // Funções para o modal de placar
         window.openScoreModal = function(match) {
@@ -1015,6 +1049,17 @@
             setTimeout(() => {
                 button.textContent = originalText;
             }, 2000);
+        }
+
+
+        // Fechar modal quando clicar fora
+        const generateModal = document.getElementById('generateMatchesModal');
+        if (generateModal) {
+            generateModal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.add('hidden');
+                }
+            });
         }
         });
     </script>

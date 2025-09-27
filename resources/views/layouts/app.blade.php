@@ -16,8 +16,7 @@
 
         <!-- Se estiver em produção, use os assets compilados -->
         @production
-            <link href="{{ asset('build/assets/app-Ch7S2ddz.css') }}" rel="stylesheet">
-            <script src="{{ asset('build/assets/app-CbEvcXly.js') }}" defer></script>
+            @vite(['resources/css/app.css', 'resources/js/app.js'])
         @else
             @vite(['resources/css/app.css', 'resources/js/app.js'])
         @endproduction

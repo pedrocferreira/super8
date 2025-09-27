@@ -78,15 +78,21 @@ class PlayersTableSeeder extends Seeder
                 [
                     'name' => $player['name'],
                     'phone' => $player['phone'],
-                    'gender' => $player['gender'] ?? null
+                    'gender' => $player['gender'] ?? null,
+                    'category' => $faker->randomElement(['D', 'C', 'B']) // Categoria aleatória
                 ]
             );
         }
 
-        // Passo final: garantir que nenhum jogador permaneça sem gênero
-        $missingGender = Player::whereNull('gender')->get();
-        foreach ($missingGender as $pl) {
-            $pl->gender = $faker->randomElement(['male', 'female']);
+        // Passo final: garantir que nenhum jogador permaneça sem gênero ou categoria
+        $missingData = Player::whereNull('gender')->orWhereNull('category')->get();
+        foreach ($missingData as $pl) {
+            if (!$pl->gender) {
+                $pl->gender = $faker->randomElement(['male', 'female']);
+            }
+            if (!$pl->category) {
+                $pl->category = $faker->randomElement(['D', 'C', 'B']);
+            }
             $pl->save();
         }
     }

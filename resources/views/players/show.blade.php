@@ -655,6 +655,82 @@
                             </p>
                             <p class="text-sm text-gray-600">pontos por torneio</p>
                         </div>
+
+                        <!-- Parceiro que Mais Ganhou Partidas -->
+                        <div class="border rounded-lg p-4 bg-gradient-to-br from-emerald-50 to-white">
+                            <h4 class="text-sm font-semibold text-emerald-600 mb-2">Parceiro Mais Vitorioso</h4>
+                            @php
+                                $bestPartnerByWins = $player->getBestPartnerByWins();
+                            @endphp
+                            @if($bestPartnerByWins)
+                                <p class="text-xl font-bold text-gray-900">{{ $bestPartnerByWins->name }}</p>
+                                <p class="text-sm text-gray-600">
+                                    {{ $bestPartnerByWins->wins }} vitórias em {{ $bestPartnerByWins->total_matches }} partidas
+                                </p>
+                            @else
+                                <p class="text-gray-500">Nenhum parceiro ainda</p>
+                            @endif
+                        </div>
+
+                        <!-- Parceiro que Mais Perdeu Partidas -->
+                        <div class="border rounded-lg p-4 bg-gradient-to-br from-orange-50 to-white">
+                            <h4 class="text-sm font-semibold text-orange-600 mb-2">Parceiro Menos Vitorioso</h4>
+                            @php
+                                $worstPartnerByLosses = $player->getWorstPartnerByLosses();
+                            @endphp
+                            @if($worstPartnerByLosses)
+                                <p class="text-xl font-bold text-gray-900">{{ $worstPartnerByLosses->name }}</p>
+                                <p class="text-sm text-gray-600">
+                                    {{ $worstPartnerByLosses->losses }} derrotas em {{ $worstPartnerByLosses->total_matches }} partidas
+                                </p>
+                            @else
+                                <p class="text-gray-500">Nenhum parceiro ainda</p>
+                            @endif
+                        </div>
+
+                        <!-- Adversário que Mais Ganhou -->
+                        <div class="border rounded-lg p-4 bg-gradient-to-br from-rose-50 to-white">
+                            <h4 class="text-sm font-semibold text-rose-600 mb-2">Adversário Mais Vitorioso</h4>
+                            @php
+                                $bestOpponentByWins = $player->getBestOpponentByWins();
+                            @endphp
+                            @if($bestOpponentByWins)
+                                <p class="text-xl font-bold text-gray-900">{{ $bestOpponentByWins->name }}</p>
+                                <p class="text-sm text-gray-600">
+                                    {{ $bestOpponentByWins->wins }} vitórias contra você
+                                </p>
+                            @else
+                                <p class="text-gray-500">Nenhum adversário ainda</p>
+                            @endif
+                        </div>
+
+                        <!-- Adversário Mais Difícil -->
+                        <div class="border rounded-lg p-4 bg-gradient-to-br from-red-50 to-white">
+                            <h4 class="text-sm font-semibold text-red-600 mb-2">Adversário Mais Difícil</h4>
+                            @php
+                                $toughestOpponentByLosses = $player->getToughestOpponentByLosses();
+                            @endphp
+                            @if($toughestOpponentByLosses)
+                                <p class="text-xl font-bold text-gray-900">{{ $toughestOpponentByLosses->name }}</p>
+                                <p class="text-sm text-gray-600">
+                                    {{ $toughestOpponentByLosses->losses }} derrotas para ele
+                                </p>
+                            @else
+                                <p class="text-gray-500">Nenhum adversário ainda</p>
+                            @endif
+                        </div>
+
+                        <!-- Estatísticas de Categoria -->
+                        <div class="border rounded-lg p-4 bg-gradient-to-br from-indigo-50 to-white">
+                            <h4 class="text-sm font-semibold text-indigo-600 mb-2">Categoria</h4>
+                            @php
+                                $categoryStats = $player->getCategoryStats();
+                            @endphp
+                            <p class="text-xl font-bold text-gray-900">{{ $categoryStats['category_name'] }}</p>
+                            <p class="text-sm text-gray-600">
+                                {{ $categoryStats['total_matches'] }} partidas • {{ $categoryStats['win_rate'] }}% aproveitamento
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>

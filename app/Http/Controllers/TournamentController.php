@@ -530,21 +530,22 @@ class TournamentController extends Controller
                 throw new \Exception('É necessária pelo menos 1 quadra para este tipo de torneio.');
             }
 
-            $players = $tournament->players()->get();
-            if ($players->count() !== 16) {
-                throw new \Exception("Número incorreto de jogadores. Necessário: 16, Atual: " . $players->count());
+            // Verificar se as duplas já foram definidas
+            $definedPairs = Pair::where('tournament_id', $tournament->id)->get();
+            if ($definedPairs->count() !== 8) {
+                throw new \Exception('É necessário definir as 8 duplas antes de gerar as partidas.');
             }
 
-            // Formar 8 duplas fixas (em ordem sequencial)
+            // Usar as duplas já definidas pelo usuário
             $pairs = [];
-            for ($i = 0; $i < 16; $i += 2) {
+            foreach ($definedPairs as $pair) {
                 $pairs[] = [
-                    $players[$i]->id,
-                    $players[$i + 1]->id
+                    $pair->player1_id,
+                    $pair->player2_id
                 ];
             }
 
-            error_log('[INFO] 8 duplas fixas formadas: ' . json_encode($pairs));
+            error_log('[INFO] 8 duplas fixas definidas pelo usuário: ' . json_encode($pairs));
 
             // Criar todas as combinações possíveis entre as 8 duplas
             // Cada dupla joga contra as outras 7 = 8*7/2 = 28 jogos total
@@ -647,37 +648,25 @@ class TournamentController extends Controller
                 throw new \Exception('Não há quadras disponíveis para o torneio.');
             }
 
-            // Lista de jogadores
-            $players = $tournament->players()->get();
-            $playerCount = $players->count();
-            
-            if ($playerCount !== 12) {
-                throw new \Exception("Número incorreto de jogadores. Necessário: 12, Atual: {$playerCount}");
+            // Verificar se as duplas já foram definidas
+            $definedPairs = Pair::where('tournament_id', $tournament->id)->get();
+            if ($definedPairs->count() !== 6) {
+                throw new \Exception('É necessário definir as 6 duplas antes de gerar as partidas.');
             }
 
-            // Embaralha os jogadores aleatoriamente
-            $shuffledPlayers = $players->shuffle()->values();
-            
-            // Formar duplas aleatoriamente
+            // Usar as duplas já definidas pelo usuário
             $pairs = [];
-            for ($i = 0; $i < 6; $i++) {
-                $player1 = $shuffledPlayers[2 * $i];
-                $player2 = $shuffledPlayers[2 * $i + 1];
+            foreach ($definedPairs as $pair) {
+                $player1 = Player::find($pair->player1_id);
+                $player2 = Player::find($pair->player2_id);
                 
                 $pairs[] = [
                     'player1' => $player1,
                     'player2' => $player2
                 ];
-                
-                // Salvar a dupla no banco
-                Pair::create([
-                    'tournament_id' => $tournament->id,
-                    'player1_id' => $player1->id,
-                    'player2_id' => $player2->id
-                ]);
             }
             
-            error_log('[INFO] 6 duplas formadas aleatoriamente');
+            error_log('[INFO] 6 duplas fixas definidas pelo usuário');
 
             // Gerar todas as combinações possíveis de confrontos (15 jogos)
             $allMatches = [];

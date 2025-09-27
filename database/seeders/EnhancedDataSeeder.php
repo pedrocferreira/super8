@@ -118,7 +118,8 @@ class EnhancedDataSeeder extends Seeder
                     'name' => $this->generatePlayerName($gender, $profile['skill_level']),
                     'email' => $faker->unique()->safeEmail,
                     'phone' => $faker->numerify('119#######'),
-                    'gender' => $gender
+                    'gender' => $gender,
+                    'category' => $this->getCategoryBySkillLevel($profile['skill_level'])
                 ]);
 
                 // Adicionar metadados para simulação realista
@@ -370,13 +371,27 @@ class EnhancedDataSeeder extends Seeder
         
         $team1Wins = $faker->randomFloat(2, 0, 1) < $team1WinProbability;
         
-        // Gerar placar realista
-        $team1Score = $team1Wins ? $faker->numberBetween(11, 21) : $faker->numberBetween(5, 19);
-        $team2Score = $team1Wins ? $faker->numberBetween(5, 19) : $faker->numberBetween(11, 21);
+        // Gerar placar realista baseado no tipo de torneio
+        $tournament = $match->round->tournament;
+        
+        if (in_array($tournament->type, ['super_8_doubles', 'super_8_fixed_pairs'])) {
+            // Super 8: placar vai até 6 pontos
+            $team1Score = $team1Wins ? 6 : $faker->numberBetween(0, 5);
+            $team2Score = $team1Wins ? $faker->numberBetween(0, 5) : 6;
+        } else {
+            // Super 12: placar tradicional (11-21 pontos)
+            $team1Score = $team1Wins ? $faker->numberBetween(11, 21) : $faker->numberBetween(5, 19);
+            $team2Score = $team1Wins ? $faker->numberBetween(5, 19) : $faker->numberBetween(11, 21);
+        }
         
         // Garantir que o placar seja válido
         if ($team1Score === $team2Score) {
-            $team1Score += 2;
+            if (in_array($tournament->type, ['super_8_doubles', 'super_8_fixed_pairs'])) {
+                $team1Score = 6;
+                $team2Score = $faker->numberBetween(0, 5);
+            } else {
+                $team1Score += 2;
+            }
         }
         
         $match->update([
@@ -508,5 +523,15 @@ class EnhancedDataSeeder extends Seeder
             'games_won' => $gamesWon,
             'games_lost' => $gamesLost
         ];
+    }
+
+    private function getCategoryBySkillLevel($skillLevel)
+    {
+        return match($skillLevel) {
+            'beginner' => 'D', // Iniciante
+            'intermediate' => 'C', // Intermediário
+            'advanced' => 'B', // Avançado
+            default => 'D'
+        };
     }
 }

@@ -121,6 +121,8 @@ Route::get('/public/rankings/player/{playerId}/season/{seasonId}/balance', [Publ
     ->name('public.rankings.player.balance');
 Route::get('/public/rankings/statistics', [PublicRankingController::class, 'statistics'])
     ->name('public.rankings.statistics');
+Route::get('/public/player/{playerId}/stats', [PublicRankingController::class, 'playerStats'])
+    ->name('public.player.stats');
 
 require __DIR__.'/auth.php';
 

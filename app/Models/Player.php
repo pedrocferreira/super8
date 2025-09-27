@@ -10,7 +10,7 @@ class Player extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'email', 'phone', 'gender'];
+    protected $fillable = ['name', 'email', 'phone', 'gender', 'category'];
 
     public function pairs()
     {
@@ -352,8 +352,8 @@ class Player extends Model
             ->join('tournaments', 'tournaments.id', '=', 'player_scores.tournament_id')
             ->where('player_scores.player_id', $this->id)
             ->select(
-                DB::raw('strftime("%Y", tournaments.created_at) as year'),
-                DB::raw('strftime("%m", tournaments.created_at) as month'),
+                DB::raw('YEAR(tournaments.created_at) as year'),
+                DB::raw('MONTH(tournaments.created_at) as month'),
                 DB::raw('SUM(player_scores.points) as points'),
                 DB::raw('SUM(player_scores.games_won) as wins'),
                 DB::raw('SUM(player_scores.games_lost) as losses'),
@@ -441,5 +441,164 @@ class Player extends Model
         } else {
             return 'inconsistent';
         }
+    }
+
+    /**
+     * Métricas Avançadas de Parceiros
+     */
+    public function getBestPartnerByWins()
+    {
+        return DB::table('matches')
+            ->join('players', function($join) {
+                $join->on('players.id', '=', 'matches.team1_player2_id')
+                     ->orOn('players.id', '=', 'matches.team2_player2_id');
+            })
+            ->where(function($query) {
+                $query->where('team1_player1_id', $this->id)
+                      ->orWhere('team2_player1_id', $this->id);
+            })
+            ->where('matches.winner_team', 'IS NOT', null)
+            ->select('players.id', 'players.name', 
+                    DB::raw("SUM(CASE
+                        WHEN (team1_player1_id = {$this->id} AND winner_team = 'team1') OR 
+                             (team2_player1_id = {$this->id} AND winner_team = 'team2')
+                        THEN 1 ELSE 0 END) as wins"),
+                    DB::raw('COUNT(*) as total_matches'))
+            ->groupBy('players.id', 'players.name')
+            ->having('total_matches', '>=', 2)
+            ->orderBy('wins', 'desc')
+            ->first();
+    }
+
+    public function getWorstPartnerByLosses()
+    {
+        return DB::table('matches')
+            ->join('players', function($join) {
+                $join->on('players.id', '=', 'matches.team1_player2_id')
+                     ->orOn('players.id', '=', 'matches.team2_player2_id');
+            })
+            ->where(function($query) {
+                $query->where('team1_player1_id', $this->id)
+                      ->orWhere('team2_player1_id', $this->id);
+            })
+            ->where('matches.winner_team', 'IS NOT', null)
+            ->select('players.id', 'players.name', 
+                    DB::raw("SUM(CASE
+                        WHEN (team1_player1_id = {$this->id} AND winner_team = 'team2') OR 
+                             (team2_player1_id = {$this->id} AND winner_team = 'team1')
+                        THEN 1 ELSE 0 END) as losses"),
+                    DB::raw('COUNT(*) as total_matches'))
+            ->groupBy('players.id', 'players.name')
+            ->having('total_matches', '>=', 2)
+            ->orderBy('losses', 'desc')
+            ->first();
+    }
+
+    /**
+     * Métricas Avançadas de Adversários
+     */
+    public function getBestOpponentByWins()
+    {
+        return DB::table('matches')
+            ->join('players', 'players.id', '=', DB::raw('CASE
+                WHEN team1_player1_id = ' . $this->id . ' OR team1_player2_id = ' . $this->id . '
+                THEN team2_player1_id
+                ELSE team1_player1_id
+                END'))
+            ->where(function($query) {
+                $query->whereRaw('(team1_player1_id = ? OR team1_player2_id = ?) AND winner_team = "team1"', [$this->id, $this->id])
+                      ->orWhereRaw('(team2_player1_id = ? OR team2_player2_id = ?) AND winner_team = "team2"', [$this->id, $this->id]);
+            })
+            ->select('players.id', 'players.name', DB::raw('COUNT(*) as wins'))
+            ->groupBy('players.id', 'players.name')
+            ->having('wins', '>=', 2)
+            ->orderBy('wins', 'desc')
+            ->first();
+    }
+
+    public function getToughestOpponentByLosses()
+    {
+        return DB::table('matches')
+            ->join('players', 'players.id', '=', DB::raw('CASE
+                WHEN team1_player1_id = ' . $this->id . ' OR team1_player2_id = ' . $this->id . '
+                THEN team2_player1_id
+                ELSE team1_player1_id
+                END'))
+            ->where(function($query) {
+                $query->whereRaw('(team1_player1_id = ? OR team1_player2_id = ?) AND winner_team = "team2"', [$this->id, $this->id])
+                      ->orWhereRaw('(team2_player1_id = ? OR team2_player2_id = ?) AND winner_team = "team1"', [$this->id, $this->id]);
+            })
+            ->select('players.id', 'players.name', DB::raw('COUNT(*) as losses'))
+            ->groupBy('players.id', 'players.name')
+            ->having('losses', '>=', 2)
+            ->orderBy('losses', 'desc')
+            ->first();
+    }
+
+    /**
+     * Métricas de Categoria
+     */
+    public function getCategoryStats()
+    {
+        return [
+            'category' => $this->category,
+            'category_name' => $this->getCategoryName(),
+            'total_matches' => $this->getTotalMatches(),
+            'wins' => $this->getTotalWins(),
+            'losses' => $this->getTotalLosses(),
+            'win_rate' => $this->getWinRate()
+        ];
+    }
+
+    public function getCategoryName()
+    {
+        return match($this->category) {
+            'D' => 'Iniciante',
+            'C' => 'Intermediário', 
+            'B' => 'Avançado',
+            default => 'Não definido'
+        };
+    }
+
+    public function getTotalMatches()
+    {
+        return DB::table('matches')
+            ->where(function($query) {
+                $query->where('team1_player1_id', $this->id)
+                      ->orWhere('team1_player2_id', $this->id)
+                      ->orWhere('team2_player1_id', $this->id)
+                      ->orWhere('team2_player2_id', $this->id);
+            })
+            ->where('winner_team', 'IS NOT', null)
+            ->count();
+    }
+
+    public function getTotalWins()
+    {
+        return DB::table('matches')
+            ->where(function($query) {
+                $query->whereRaw('(team1_player1_id = ? OR team1_player2_id = ?) AND winner_team = "team1"', [$this->id, $this->id])
+                      ->orWhereRaw('(team2_player1_id = ? OR team2_player2_id = ?) AND winner_team = "team2"', [$this->id, $this->id]);
+            })
+            ->count();
+    }
+
+    public function getTotalLosses()
+    {
+        return DB::table('matches')
+            ->where(function($query) {
+                $query->whereRaw('(team1_player1_id = ? OR team1_player2_id = ?) AND winner_team = "team2"', [$this->id, $this->id])
+                      ->orWhereRaw('(team2_player1_id = ? OR team2_player2_id = ?) AND winner_team = "team1"', [$this->id, $this->id]);
+            })
+            ->count();
+    }
+
+    public function getWinRate()
+    {
+        $total = $this->getTotalMatches();
+        if ($total == 0) return 0;
+        
+        $wins = $this->getTotalWins();
+        return round(($wins / $total) * 100, 1);
     }
 }
