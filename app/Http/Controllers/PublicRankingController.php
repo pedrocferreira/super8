@@ -142,10 +142,19 @@ class PublicRankingController extends Controller
     }
 
     /**
-     * Lista de temporadas para seleção pública
+     * Lista de temporadas para seleção pública ou redireciona para temporada ativa
      */
     public function index()
     {
+        // Verifica se há uma temporada ativa
+        $activeSeason = Season::where('status', 'active')->first();
+        
+        if ($activeSeason) {
+            // Se há temporada ativa, redireciona diretamente para o ranking dela
+            return redirect()->route('public.rankings.season', $activeSeason->id);
+        }
+        
+        // Se não há temporada ativa, mostra a lista de temporadas
         $seasons = Season::orderBy('name', 'desc')->get();
         return view('public.rankings.index', compact('seasons'));
     }

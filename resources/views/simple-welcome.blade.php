@@ -74,6 +74,45 @@
         .login-link:hover {
             background: #1d4ed8;
         }
+        
+        /* Enhanced mobile responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+                margin: 10px;
+            }
+            
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+            
+            .stat-card {
+                padding: 15px;
+            }
+            
+            .stat-number {
+                font-size: 1.5em;
+            }
+            
+            .ranking-table {
+                overflow-x: auto;
+            }
+            
+            table {
+                min-width: 600px;
+            }
+        }
+        
+        /* Smooth transitions */
+        .stat-card, .login-link, a {
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
     </style>
 </head>
 <body>

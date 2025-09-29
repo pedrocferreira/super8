@@ -6,6 +6,36 @@
     <title>Ranking {{ $season->name }} - Super8</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+        }
+        
+        .hover-scale:hover {
+            transform: scale(1.02);
+            transition: transform 0.3s ease;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .rank-1 { background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%); }
+        .rank-2 { background: linear-gradient(135deg, #c0c0c0 0%, #e5e5e5 100%); }
+        .rank-3 { background: linear-gradient(135deg, #cd7f32 0%, #daa520 100%); }
+    </style>
 </head>
 <body class="bg-gray-100">
     <!-- Header -->
@@ -15,10 +45,10 @@
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
                         <a href="{{ route('public.rankings.index') }}" class="flex items-center">
-                            <svg class="w-8 h-8 text-yellow-400" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12,2C6.48,2 2,6.48 2,12C2,17.52 6.48,22 12,22C17.52,22 22,17.52 22,12C22,6.48 17.52,2 12,2M12,4C16.42,4 20,7.58 20,12C20,16.42 16.42,20 12,20C7.58,20 4,16.42 4,12C4,7.58 7.58,4 12,4M12,6C8.69,6 6,8.69 6,12C6,15.31 8.69,18 12,18C15.31,18 18,15.31 18,12C18,8.69 15.31,6 12,6M12,8C14.21,8 16,9.79 16,12C16,14.21 14.21,16 12,16C9.79,16 8,14.21 8,12C8,9.79 9.79,8 12,8Z"/>
-                            </svg>
-                            <span class="ml-2 text-xl font-bold text-gray-900">Super8</span>
+                            <img src="{{ asset('images/logoSemSub.png') }}" 
+                                 alt="Sky Arena" 
+                                 class="h-8 w-auto">
+                            <span class="ml-2 text-xl font-bold text-gray-900">Sky Arena</span>
                         </a>
                     </div>
                 </div>
@@ -43,18 +73,23 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             
-            <!-- Título e Informações -->
-            <div class="text-center mb-8">
-                <h1 class="text-3xl font-bold text-gray-900 mb-2">
-                    🏆 Ranking - {{ $season->name }}
-                </h1>
-                <p class="text-gray-600">
-                    @if($season->start_date && $season->end_date)
-                        {{ $season->start_date->format('d/m/Y') }} - {{ $season->end_date->format('d/m/Y') }}
-                    @elseif($season->start_date)
-                        Desde {{ $season->start_date->format('d/m/Y') }}
-                    @endif
-                </p>
+            <!-- Hero Section -->
+            <div class="gradient-bg text-white py-12 rounded-2xl mb-8 animate-fade-in-up">
+                <div class="text-center">
+                    <h1 class="text-4xl font-bold mb-4">
+                        🏆 Ranking - {{ $season->name }}
+                    </h1>
+                    <p class="text-xl text-blue-100 mb-6">
+                        @if($season->start_date && $season->end_date)
+                            {{ $season->start_date->format('d/m/Y') }} - {{ $season->end_date->format('d/m/Y') }}
+                        @elseif($season->start_date)
+                            Desde {{ $season->start_date->format('d/m/Y') }}
+                        @endif
+                    </p>
+                    <div class="inline-flex items-center px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full">
+                        <span class="text-sm font-medium">{{ $ranking->count() }} Jogadores</span>
+                    </div>
+                </div>
             </div>
 
             <!-- Informações do Sistema de Balanceamento -->
@@ -176,62 +211,100 @@
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
                                     @foreach($ranking as $index => $player)
-                                        <tr class="hover:bg-gray-50">
+                                        <tr class="hover:bg-gray-50 hover-scale transition-all duration-300 {{ $index < 3 ? 'ring-2 ring-opacity-20' : '' }} {{ $index === 0 ? 'ring-yellow-400 bg-yellow-50/30' : ($index === 1 ? 'ring-gray-400 bg-gray-50/30' : ($index === 2 ? 'ring-amber-400 bg-amber-50/30' : '')) }}">
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <div class="flex items-center">
                                                     @if($index < 3)
-                                                        @if($index === 0)
-                                                            <span class="text-2xl">🥇</span>
-                                                        @elseif($index === 1)
-                                                            <span class="text-2xl">🥈</span>
-                                                        @else
-                                                            <span class="text-2xl">🥉</span>
-                                                        @endif
+                                                        <div class="flex items-center justify-center w-12 h-12 rounded-full {{ $index === 0 ? 'rank-1' : ($index === 1 ? 'rank-2' : 'rank-3') }} shadow-lg">
+                                                            @if($index === 0)
+                                                                <span class="text-2xl">🥇</span>
+                                                            @elseif($index === 1)
+                                                                <span class="text-2xl">🥈</span>
+                                                            @else
+                                                                <span class="text-2xl">🥉</span>
+                                                            @endif
+                                                        </div>
                                                     @else
-                                                        <span class="text-lg font-semibold text-gray-600">
-                                                            #{{ $index + 1 }}
-                                                        </span>
+                                                        <div class="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 border-2 border-gray-300">
+                                                            <span class="text-lg font-bold text-gray-700">
+                                                                {{ $index + 1 }}
+                                                            </span>
+                                                        </div>
                                                     @endif
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
-                                                <div class="text-sm font-medium text-gray-900">
-                                                    {{ $player['player_name'] }}
+                                                <div class="flex items-center">
+                                                    <div class="flex-shrink-0 h-10 w-10">
+                                                        <div class="h-10 w-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg">
+                                                            {{ strtoupper(substr($player['player_name'], 0, 2)) }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="ml-4">
+                                                        <div class="text-sm font-medium text-gray-900">
+                                                            {{ $player['player_name'] }}
+                                                        </div>
+                                                        @if($index < 3)
+                                                            <div class="text-xs text-gray-500">
+                                                                @if($index === 0) Líder da Temporada @endif
+                                                                @if($index === 1) Vice-Líder @endif
+                                                                @if($index === 2) 3º Colocado @endif
+                                                            </div>
+                                                        @endif
+                                                    </div>
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
-                                                <div class="text-sm font-bold text-gray-900">
-                                                    {{ number_format($player['total_points']) }}
+                                                <div class="flex items-center">
+                                                    <div class="text-lg font-bold {{ $index < 3 ? 'text-gray-900' : 'text-gray-700' }}">
+                                                        {{ number_format($player['total_points']) }}
+                                                    </div>
+                                                    <div class="text-xs text-gray-500 ml-1">pts</div>
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
-                                                <div class="text-sm text-green-600 font-semibold">
-                                                    {{ $player['total_wins'] }}
+                                                <div class="flex items-center">
+                                                    <div class="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                                                    <div class="text-sm text-green-600 font-semibold">
+                                                        {{ $player['total_wins'] }}
+                                                    </div>
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
-                                                <div class="text-sm text-red-600 font-semibold">
-                                                    {{ $player['total_losses'] }}
+                                                <div class="flex items-center">
+                                                    <div class="w-2 h-2 bg-red-500 rounded-full mr-2"></div>
+                                                    <div class="text-sm text-red-600 font-semibold">
+                                                        {{ $player['total_losses'] }}
+                                                    </div>
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
-                                                <div class="text-sm font-semibold 
-                                                    @if($player['win_rate'] >= 70) text-green-600
-                                                    @elseif($player['win_rate'] >= 50) text-yellow-600
-                                                    @else text-red-600
-                                                    @endif">
-                                                    {{ $player['win_rate'] }}%
+                                                <div class="flex items-center">
+                                                    <div class="flex-1 bg-gray-200 rounded-full h-2 mr-2">
+                                                        <div class="h-2 rounded-full {{ $player['win_rate'] >= 70 ? 'bg-green-500' : ($player['win_rate'] >= 50 ? 'bg-yellow-500' : 'bg-red-500') }}" 
+                                                             style="width: {{ $player['win_rate'] }}%"></div>
+                                                    </div>
+                                                    <div class="text-sm font-semibold 
+                                                        @if($player['win_rate'] >= 70) text-green-600
+                                                        @elseif($player['win_rate'] >= 50) text-yellow-600
+                                                        @else text-red-600
+                                                        @endif">
+                                                        {{ $player['win_rate'] }}%
+                                                    </div>
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
-                                                <div class="text-sm text-gray-600">
-                                                    {{ $player['tournaments_played'] }}
+                                                <div class="flex items-center">
+                                                    <div class="text-sm text-gray-600 font-medium">
+                                                        {{ $player['tournaments_played'] }}
+                                                    </div>
+                                                    <div class="text-xs text-gray-400 ml-1">torneios</div>
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                                 <a href="{{ route('public.rankings.player.balance', [$player['player_id'], $season->id]) }}" 
-                                                   class="text-blue-600 hover:text-blue-900">
-                                                    ⚖️ Ver Detalhes
+                                                   class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 hover:bg-blue-200 transition-colors duration-200">
+                                                    ⚖️ Detalhes
                                                 </a>
                                             </td>
                                         </tr>
@@ -280,6 +353,35 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate elements on scroll
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            });
+
+            document.querySelectorAll('.animate-fade-in-up').forEach(el => {
+                observer.observe(el);
+            });
+
+            // Add hover effects to table rows
+            document.querySelectorAll('tbody tr').forEach(row => {
+                row.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.01)';
+                });
+                
+                row.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            });
+        });
+    </script>
 </body>
 </html>
 

@@ -10,9 +10,11 @@ use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
-    public function __construct()
+    private RankingBalanceService $balanceService;
+
+    public function __construct(RankingBalanceService $balanceService)
     {
-        // Construtor simplificado para evitar problemas de dependência
+        $this->balanceService = $balanceService;
     }
 
     /**
@@ -21,47 +23,50 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         try {
-            // Parâmetros de filtro
-            $category = $request->get('category', 'all');
-            $gender = $request->get('gender', 'all');
-            $rankingType = $request->get('type', 'general');
+            // Obter temporada ativa
+            $activeSeason = Season::where('status', 'active')->first();
             
-            // Query base para ranking
-            $query = Player::select(
-                'players.id',
-                'players.name',
-                'players.email',
-                'players.gender',
-                'players.category',
-                DB::raw('COALESCE(SUM(player_scores.points), 0) as total_points'),
-                DB::raw('COALESCE(SUM(player_scores.games_won), 0) as total_wins'),
-                DB::raw('COALESCE(SUM(player_scores.games_lost), 0) as total_losses'),
-                DB::raw('COUNT(DISTINCT player_scores.tournament_id) as tournaments_played')
-            )
-            ->leftJoin('player_scores', 'players.id', '=', 'player_scores.player_id')
-            ->groupBy('players.id', 'players.name', 'players.email', 'players.gender', 'players.category');
-
-            // Aplicar filtros
-            if ($category !== 'all') {
-                $query->where('players.category', $category);
-            }
-            
-            if ($gender !== 'all') {
-                $query->where('players.gender', $gender);
-            }
-
-            // Ordenação baseada no tipo de ranking
-            if ($rankingType === 'category') {
-                $query->orderBy('players.category', 'asc')
-                      ->orderBy('total_points', 'desc')
-                      ->orderBy('total_wins', 'desc');
+            if ($activeSeason) {
+                // Se há temporada ativa, usar o mesmo cálculo do ranking público
+                $ranking = $this->balanceService->calculateSeasonRanking($activeSeason->id);
+                $balanceStats = $this->balanceService->getBalanceStatistics($activeSeason->id);
+                
+                // Converter para formato compatível com a view
+                $playerRanking = collect($ranking)->map(function ($player) {
+                    return (object) [
+                        'id' => $player['player_id'] ?? 0,
+                        'name' => $player['player_name'] ?? 'Jogador',
+                        'email' => $player['player_email'] ?? '',
+                        'gender' => $player['player_gender'] ?? null,
+                        'category' => $player['player_category'] ?? null,
+                        'total_points' => $player['total_points'] ?? 0,
+                        'total_wins' => $player['total_wins'] ?? 0,
+                        'total_losses' => $player['total_losses'] ?? 0,
+                        'tournaments_played' => $player['tournaments_played'] ?? 0
+                    ];
+                });
             } else {
-                $query->orderBy('total_points', 'desc')
-                      ->orderBy('total_wins', 'desc')
-                      ->orderBy('total_losses', 'asc');
-            }
+                // Se não há temporada ativa, usar ranking geral
+                $query = Player::select(
+                    'players.id',
+                    'players.name',
+                    'players.email',
+                    'players.gender',
+                    'players.category',
+                    DB::raw('COALESCE(SUM(player_scores.points), 0) as total_points'),
+                    DB::raw('COALESCE(SUM(player_scores.games_won), 0) as total_wins'),
+                    DB::raw('COALESCE(SUM(player_scores.games_lost), 0) as total_losses'),
+                    DB::raw('COUNT(DISTINCT player_scores.tournament_id) as tournaments_played')
+                )
+                ->leftJoin('player_scores', 'players.id', '=', 'player_scores.player_id')
+                ->groupBy('players.id', 'players.name', 'players.email', 'players.gender', 'players.category')
+                ->orderBy('total_points', 'desc')
+                ->orderBy('total_wins', 'desc')
+                ->orderBy('total_losses', 'asc');
 
-            $playerRanking = $query->get();
+                $playerRanking = $query->get();
+                $balanceStats = ['balance_active' => false];
+            }
 
             // Obter temporadas ativas
             $activeSeasons = Season::where('status', 'active')->get();
@@ -73,20 +78,27 @@ class HomeController extends Controller
                 'active_seasons' => $activeSeasons->count(),
                 'total_tournaments' => DB::table('tournaments')->count(),
                 'total_matches' => DB::table('matches')->count(),
+                'balance_active_seasons' => $activeSeason ? ($balanceStats['balance_active'] ? 1 : 0) : 0,
             ];
 
             // Dados para o ranking público
             $balanceData = [];
             $playerBalanceMultipliers = [];
             
-            return view('simple-welcome', compact('playerRanking', 'balanceData', 'systemStats', 'activeSeasons', 'playerBalanceMultipliers', 'category', 'gender', 'rankingType'));
+            return view('welcome', compact('playerRanking', 'balanceData', 'systemStats', 'activeSeasons', 'playerBalanceMultipliers', 'activeSeason'));
             
         } catch (\Exception $e) {
+            // Log do erro para debug
+            \Log::error('Erro no HomeController: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString()
+            ]);
+            
             // Em caso de erro, mostrar página vazia
             $playerRanking = collect();
             $balanceData = [];
             $playerBalanceMultipliers = [];
             $activeSeasons = collect();
+            $activeSeason = null;
             
             $systemStats = [
                 'total_players' => 0,
@@ -94,9 +106,10 @@ class HomeController extends Controller
                 'active_seasons' => 0,
                 'total_tournaments' => 0,
                 'total_matches' => 0,
+                'balance_active_seasons' => 0,
             ];
             
-            return view('simple-welcome', compact('playerRanking', 'balanceData', 'systemStats', 'activeSeasons', 'playerBalanceMultipliers'));
+            return view('welcome', compact('playerRanking', 'balanceData', 'systemStats', 'activeSeasons', 'playerBalanceMultipliers', 'activeSeason'));
         }
     }
 }
